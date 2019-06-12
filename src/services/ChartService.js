@@ -63,7 +63,6 @@ export function fetchDruidData(params){
     .then(function(response) {
       return response.json();
     }).then(function(data) {
-      console.log("MY CHART DATA", data);
       resolve(data);
     });
   });

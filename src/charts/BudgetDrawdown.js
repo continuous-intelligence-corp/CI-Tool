@@ -136,9 +136,7 @@ class BudgetDrawdown extends Component {
   }
 
   fetchTransactionsByProgram = () => {
-    console.log("fetchTransactionsByProgram");
     fetchDruidData(druidQueryParams).then(data => {
-      console.log("BudgetDrawdown data", data);
       let computedResults = [];//sum__TotalSpent
       let chartData = this.state.chartOptions.series[0].data;
       let druidData = data[0].result;
@@ -172,8 +170,7 @@ class BudgetDrawdown extends Component {
     })
   }
   render() {
-    const { chartOptions, hoverData } = this.state;
-    console.log("data", chartOptions.series[0].data);
+    const { chartOptions } = this.state;
     return (
       <ChartWrapperStyles>
         <div style={{ width: "1200px", height: "400px"}}>
