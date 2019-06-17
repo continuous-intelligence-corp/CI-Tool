@@ -14,7 +14,7 @@ const ChartWrapperStyles = styled(Card)`
 
 // var druidQueryParams = {
 //   queryType: "topN",
-//   dataSource: "transaction",
+//   dataSource: "transaction2",
 //   aggregations: [
 //     {
 //       fieldName: "TotalSpent",
@@ -35,7 +35,7 @@ const ChartWrapperStyles = styled(Card)`
 //
 var druidQueryParams = {
   "queryType": "timeseries",
-  "dataSource": "transaction",
+  "dataSource": "transaction2",
   "aggregations": [
     {
       "type": "doubleSum",

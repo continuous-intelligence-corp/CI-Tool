@@ -13,7 +13,7 @@ const ChartWrapperStyles = styled(Card)`
 
 var druidQueryParams = {
     "queryType": "topN",
-    "dataSource": "transaction",
+    "dataSource": "transaction2",
     "aggregations": [
       {
         "type": "doubleSum",

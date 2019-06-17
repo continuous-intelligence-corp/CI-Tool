@@ -1,7 +1,7 @@
 import React from "react";
 let params = {
         queryType: "timeseries",
-        dataSource: "transaction",
+        dataSource: "transaction2",
         intervals: ["2019-06-01/2019-06-04"],
         granularity: "day",
         threshold: 25,

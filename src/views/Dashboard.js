@@ -23,7 +23,7 @@ const StyledDashboard = styled.div`
 
 let data = {
         queryType: "timeseries",
-        dataSource: "transaction",
+        dataSource: "transaction2",
         intervals: ["2019-05-20/2019-06-05"],
         granularity: "day",
 };
