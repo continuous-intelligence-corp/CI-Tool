@@ -8,8 +8,6 @@ import { fetchOffices, fetchDruidData } from "../services/ChartService.js";
 
 const ChartWrapperStyles = styled(Card)`
   background: #fff;
-  height: 500px;
-  width: 500px;
 `;
 var H = Highcharts,
     map = Highcharts.maps['countries/us/us-all'],
@@ -36,7 +34,7 @@ class RegionalBudget extends Component {
   state = {
     chartOptions: {
       title: {
-          text: 'Total Budget Remaining By Office'
+          text: ''
       },
 
       tooltip: {
@@ -145,8 +143,8 @@ class RegionalBudget extends Component {
   }
   render() {
     return (
-      <ChartWrapperStyles>
-        <div style={{ width: "1200px", height: "400px"}}>
+      <ChartWrapperStyles title="Budget Vs. Actual">
+        <div style={{ width: "550px", height: "100%"}}>
           <HighchartsReact
             highcharts={Highcharts}
             constructorType={'mapChart'}

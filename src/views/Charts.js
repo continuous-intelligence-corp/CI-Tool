@@ -1,16 +1,17 @@
 import React from "react";
-let params = {
-        queryType: "timeseries",
-        dataSource: "transaction2",
-        intervals: ["2019-06-01/2019-06-04"],
-        granularity: "day",
-        threshold: 25,
-
-};
+import { Row, Col } from 'antd';
+import ChartController from "../components/ChartController";
 class Charts extends React.Component {
   render() {
     return (
-      <div>Charts!!!</div>
+      <div>
+          <Col span={18}>
+            col-6 col-pull-18
+          </Col>
+          <Col span={6}>
+            <ChartController />
+          </Col>
+      </div>
     );
   }
 }

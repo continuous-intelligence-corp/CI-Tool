@@ -8,8 +8,6 @@ import _ from "lodash";
 
 const ChartWrapperStyles = styled(Card)`
   background: #fff;
-  height: 500px;
-  width: 500px;
 `;
 
 // var druidQueryParams = {
@@ -61,10 +59,10 @@ class IncomeTracker extends Component {
       },
 
       title: {
-        text: 'Budget Vs. Actual'
+        text: ''
       },
       subtitle: {
-          text: 'Source: Druid'
+          text: ''
       },
       xAxis: {
           categories: [
@@ -148,8 +146,8 @@ class IncomeTracker extends Component {
   render() {
     const { chartOptions } = this.state;
     return (
-      <ChartWrapperStyles>
-        <div style={{ width: "1200px", height: "400px"}}>
+      <ChartWrapperStyles title="Budget Vs. Actual">
+        <div style={{ width: "550px", height: "100%"}}>
           <HighchartsReact
             options={chartOptions}
           />

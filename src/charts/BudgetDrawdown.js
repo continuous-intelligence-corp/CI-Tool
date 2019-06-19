@@ -7,8 +7,6 @@ import _ from "lodash";
 import { fetchPrograms, fetchDruidData } from "../services/ChartService.js";
 const ChartWrapperStyles = styled(Card)`
   background: #fff;
-  height: 500px;
-  width: 500px;
 `;
 
 var druidQueryParams = {
@@ -64,10 +62,10 @@ class BudgetDrawdown extends Component {
       },
 
       title: {
-        text: 'Budget Drawdown'
+        text: ''
       },
       subtitle: {
-          text: 'Source: Druid'
+          text: ''
       },
       xAxis: {
         type: 'category'
@@ -94,7 +92,7 @@ class BudgetDrawdown extends Component {
         dataLabels: {
             enabled: true,
             formatter: function () {
-                return Highcharts.numberFormat(this.y / 1000, 0, ',') + 'k';
+                return Highcharts.numberFormat(this.y / 1000000, 0, ',') + 'M';
             },
             style: {
                 fontWeight: 'bold'
@@ -172,8 +170,10 @@ class BudgetDrawdown extends Component {
   render() {
     const { chartOptions } = this.state;
     return (
-      <ChartWrapperStyles>
-        <div style={{ width: "1200px", height: "400px"}}>
+      <ChartWrapperStyles
+        title="Budget Drawdown"
+      >
+        <div style={{ width: "1150px", height: "100%"}}>
           <HighchartsReact
             options={chartOptions}
           />
