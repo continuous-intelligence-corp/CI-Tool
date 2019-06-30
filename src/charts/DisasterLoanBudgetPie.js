@@ -45,6 +45,8 @@ class DisasterLoanBudgetPie extends Component {
         offices,
         chartOptions: {
           series: [{
+            name: 'Budget',
+            colorByPoint: true,
             data: offices.map(office => {
               console.log("office", office);
               return [office.name, Math.round(office["028-001"]/sum*100)]
