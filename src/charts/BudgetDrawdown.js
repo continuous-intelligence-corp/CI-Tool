@@ -62,7 +62,7 @@ class BudgetDrawdown extends Component {
       },
 
       title: {
-        text: ''
+        text: 'Budget Drawdown'
       },
       subtitle: {
           text: ''
@@ -170,10 +170,8 @@ class BudgetDrawdown extends Component {
   render() {
     const { chartOptions } = this.state;
     return (
-      <ChartWrapperStyles
-        title="Budget Drawdown"
-      >
-        <div style={{ width: "1150px", height: "100%"}}>
+      <ChartWrapperStyles>
+        <div>
           <HighchartsReact
             options={chartOptions}
           />

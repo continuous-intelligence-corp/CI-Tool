@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Select, DatePicker } from 'antd';
+import styled from "styled-components";
+import moment from "moment";
+
+const StyledChartControler = styled(Form)`
+  background: white;
+  padding: 25px !important;
+`;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 class ChartForm extends Component {
 
@@ -11,38 +20,72 @@ class ChartForm extends Component {
       }
     });
   };
+  disabledDate = (current, type) => {
+    // Can not select days before today and today
+    return current && (current > moment().endOf('year') || current < moment('2019').endOf('year'));
+  }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form, offices, programs } = this.props;
+    const { getFieldDecorator } = form;
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item>
-          {getFieldDecorator('username', {
-            rules: [{ required: true, message: 'Please input your username!' }],
+      <StyledChartControler onSubmit={this.handleSubmit} className="login-form">
+        <Form.Item label="Chart Type" hasFeedback>
+          {getFieldDecorator('chart-type', {
+            rules: [{ required: true, message: 'Please select a chart type!' }],
           })(
-            <Input
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Username"
-            />,
+            <Select placeholder="Please select a chart type">
+              <Option value="area">Area</Option>
+              <Option value="bar">Bar</Option>
+              <Option value="column">Column</Option>
+              <Option value="line">Line</Option>
+            </Select>,
           )}
         </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
+
+        <Form.Item label="Offices">
+          {getFieldDecorator('officeIds', {
+            rules: [
+              { required: true, message: 'Please select Offices to filter by!', type: 'array' },
+            ],
           })(
-            <Input
-              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              type="password"
-              placeholder="Password"
-            />,
+            <Select mode="multiple" placeholder="Please select Offices to filter by">
+              {offices && offices.map(office => (
+                <Option value={office.id}>{office.name}</Option>
+              ))}
+            </Select>,
           )}
         </Form.Item>
+
+        <Form.Item label="Programs">
+          {getFieldDecorator('programIds', {
+            rules: [
+              { required: true, message: 'Please select Programs to filter by!', type: 'array' },
+            ],
+          })(
+            <Select mode="multiple" placeholder="Please select Programs to filter by">
+              {programs && programs.map(program => (
+                <Option value={program.code}>{program.name}</Option>
+              ))}
+            </Select>,
+          )}
+        </Form.Item>
+
+        <Form.Item label="Pick Dates">
+          {getFieldDecorator('date', {
+            rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+          })(
+            <RangePicker disabledDate={this.disabledDate} />
+          )}
+        </Form.Item>
+
+
         <Form.Item>
           <Button type="primary" htmlType="submit" className="submit-form-button">
             Submit
           </Button>
         </Form.Item>
-      </Form>
+      </StyledChartControler>
     )
   }
 }

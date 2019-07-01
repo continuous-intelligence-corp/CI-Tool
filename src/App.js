@@ -13,7 +13,7 @@ const switchRoutes = (
       return (
         <Route
           exact
-          path={prop.path}
+          path={prop.subPath ? prop.path+prop.subPath : prop.path}
           component={prop.component}
           key={key}
         />
@@ -34,7 +34,7 @@ class App extends React.Component {
     return (
       <Layout className="layout">
         <NavigationHeader collapsed={this.state.collapsed} routes={routes} curRoute={this.props.location.pathname} />
-        <Content style={{ padding: '25px 50px' }}>
+        <Content style={{ padding: '0 25px' }}>
           {switchRoutes}
         </Content>
         <Footer style={{ textAlign: 'center' }}>

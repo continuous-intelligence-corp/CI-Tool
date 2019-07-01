@@ -12,14 +12,6 @@ const StyledDashboard = styled.div`
   .ant-row {
     margin-top: 25px;
   }
-  .ant-col-6 > div {
-    height: 200px;
-  }
-  .ant-col-24 > div {
-    width: 100%;
-
-    height: 500px;
-  }
 `;
 
 let data = {
@@ -32,25 +24,23 @@ class Dashboard extends Component {
   render() {
     return (
       <StyledDashboard>
-        <Row>
-          <Col span={24}>
+        <Row gutter={24}>
+          <Col span={16}>
             <BudgetDrawdown />
           </Col>
+          <Col span={8}>
+            <DisasterLoanBudgetPie />
+          </Col>
         </Row>
         <Row gutter={24}>
-          <Col span={12}>
-            <IncomeTracker />
-          </Col>
-          <Col span={12}>
+          <Col span={8}>
             <RegionalBudget />
           </Col>
-        </Row>
-        <Row gutter={24}>
-          <Col span={12}>
-            <DisasterLoan />
+          <Col span={8}>
+            <IncomeTracker />
           </Col>
-          <Col span={12}>
-            <DisasterLoanBudgetPie />
+          <Col span={8}>
+            <DisasterLoan />
           </Col>
         </Row>
       </StyledDashboard>

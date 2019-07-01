@@ -39,7 +39,7 @@ class DisasterLoan extends Component {
   state = {
     chartOptions: {
       title: {
-          text: ''
+          text: 'Disaster Loan Budget Vs. Actual'
       },
 
       tooltip: {
@@ -148,10 +148,8 @@ class DisasterLoan extends Component {
   }
   render() {
     return (
-      <ChartWrapperStyles
-        title="Disaster Loan Budget Vs. Actual"
-      >
-        <div style={{ width: "550px", height: "100%"}}>
+      <ChartWrapperStyles>
+        <div>
           <HighchartsReact
             highcharts={Highcharts}
             constructorType={'mapChart'}

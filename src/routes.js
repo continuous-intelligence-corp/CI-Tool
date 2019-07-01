@@ -16,6 +16,42 @@ const routes = [
     name: "Charts",
     icon: "bar-chart",
     component: Charts,
+    hasChildren: true
+  },
+  {
+    path: "/charts",
+    subPath: "/budgetdrawdown",
+    name: "Budget Drawdown",
+    icon: "box-plot",
+    component: Charts,
+  },
+  {
+    path: "/charts",
+    subPath: "/disasterloan",
+    name: "Disaster Loan",
+    icon: "area-chart",
+    component: Charts,
+  },
+  {
+    path: "/charts",
+    subPath: "/disasterloanbudget",
+    name: "Disaster Loan Budget",
+    icon: "pie-chart",
+    component: Charts,
+  },
+  {
+    path: "/charts",
+    subPath: "/incometracker",
+    name: "Income Tracker",
+    icon: "line-chart",
+    component: Charts,
+  },
+  {
+    path: "/charts",
+    subPath: "/regionalbudget",
+    name: "Regional Budget",
+    icon: "global",
+    component: Charts,
   },
   {
     path: "/pipelines",

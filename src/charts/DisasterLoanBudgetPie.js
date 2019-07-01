@@ -25,7 +25,7 @@ class DisasterLoanBudgetPie extends Component {
       title: {
           verticalAlign: 'middle',
           floating: true,
-          text: ''
+          text: 'Disaster Loan Budget By Office'
       },
       tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -55,7 +55,7 @@ class DisasterLoanBudgetPie extends Component {
           title: {
             verticalAlign: 'middle',
             floating: true,
-            text: `Total Budget: ${sum/1000000}M`
+            text: `Total: ${sum/1000000}M`
           }
         }
       });
@@ -64,10 +64,8 @@ class DisasterLoanBudgetPie extends Component {
 
   render() {
     return (
-      <ChartWrapperStyles
-        title="Disaster Loan Budget By Office"
-      >
-        <div style={{ width: "550px", height: "100%"}}>
+      <ChartWrapperStyles>
+        <div>
           <HighchartsReact
             highcharts={Highcharts}
             options={this.state.chartOptions || {}}

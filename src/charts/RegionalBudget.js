@@ -34,7 +34,7 @@ class RegionalBudget extends Component {
   state = {
     chartOptions: {
       title: {
-          text: ''
+          text: 'Regional Budget'
       },
 
       tooltip: {
@@ -143,8 +143,8 @@ class RegionalBudget extends Component {
   }
   render() {
     return (
-      <ChartWrapperStyles title="Budget Vs. Actual">
-        <div style={{ width: "550px", height: "100%"}}>
+      <ChartWrapperStyles>
+        <div>
           <HighchartsReact
             highcharts={Highcharts}
             constructorType={'mapChart'}

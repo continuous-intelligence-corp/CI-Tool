@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const { Header } = Layout;
+const { SubMenu } = Menu;
 
 const NavigationHeaderWithStyles = styled(Header)`
   display: flex;
@@ -38,10 +39,11 @@ const NavigationHeaderWithStyles = styled(Header)`
     }
   }
   .right-icons-section {
-    color: white;
+    color: #7F8A94;
     display: flex;
     justify-content: flex-end;
-    .ant-tool-open {
+    svg {
+      color: #7F8A94;
     }
     .right-icon-selection {
       display: inline-block;
@@ -51,8 +53,11 @@ const NavigationHeaderWithStyles = styled(Header)`
       transition: all .3s;
     }
     .right-icon-selection:hover {
-      background: #F9F9F9;
+      background: #1890FF;
       cursor: pointer;
+      svg {
+        color: #fff;
+      }
     }
     .avatar-wrapper {
       width: auto;
@@ -116,7 +121,37 @@ class NavigationHeader extends React.Component {
             selectedKeys={[curRoute]}
             style={{ lineHeight: '64px' }}
           >
-            {routes.map((route, routeIndex) => (
+            {routes.map((route, routeIndex) => {
+              if (route.subPath) return null;
+              if (route.hasChildren) {
+                return (
+                  <SubMenu
+                    title={
+                      <span className="submenu-title-wrapper">
+                        <Icon type={route.icon} />
+                        {route.name}
+                      </span>
+                    }
+                  >
+                    <Menu.ItemGroup title={null}>
+                    {routes.map((subRoute, subRouteIndex) => {
+                      if (!subRoute.subPath || subRoute.path !== route.path) return null;
+                      return (
+                        <Menu.Item key={subRouteIndex}>
+                          <Link to={subRoute.path+subRoute.subPath}>
+                            <Icon type={subRoute.icon} />
+                            <span className="nav-text">
+                              {subRoute.name}
+                            </span>
+                          </Link>
+                        </Menu.Item>
+                      )
+                    })}
+                    </Menu.ItemGroup>
+                  </SubMenu>
+                )
+              }
+            return (
               <Menu.Item key={route.path}>
                 <Link to={route.path}>
                   <Icon type={route.icon} />
@@ -125,7 +160,8 @@ class NavigationHeader extends React.Component {
                   </span>
                 </Link>
               </Menu.Item>
-            ))}
+            );
+          })}
           </Menu>
         </div>
           <div className="right-icons-section">
@@ -153,7 +189,7 @@ class NavigationHeader extends React.Component {
                 rel="noopener noreferrer"
                 className="right-icon-selection"
               >
-              <Badge count={5}>
+              <Badge count={5} style={{ top: "-4px" }}>
                 <Icon type="bell" />
               </Badge>
               </a>

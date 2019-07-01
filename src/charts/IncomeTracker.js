@@ -59,7 +59,7 @@ class IncomeTracker extends Component {
       },
 
       title: {
-        text: ''
+        text: 'Monthly Budget'
       },
       subtitle: {
           text: ''
@@ -146,8 +146,8 @@ class IncomeTracker extends Component {
   render() {
     const { chartOptions } = this.state;
     return (
-      <ChartWrapperStyles title="Budget Vs. Actual">
-        <div style={{ width: "550px", height: "100%"}}>
+      <ChartWrapperStyles>
+        <div>
           <HighchartsReact
             options={chartOptions}
           />
