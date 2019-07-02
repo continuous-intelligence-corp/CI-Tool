@@ -4,7 +4,7 @@ import ChartWidget from "../components/ChartWidget.js";
 import styled from "styled-components";
 import HighchartsReact from 'highcharts-react-official';
 import _ from "lodash";
-import { fetchOffices, fetchDruidData } from "../services/ChartService.js";
+import { CHART_POLL_TIMER, fetchOffices, fetchDruidData } from "../services/ChartService.js";
 
 const ChartWrapperStyles = styled(Card)`
   background: #fff;
@@ -138,7 +138,11 @@ class RegionalBudget extends Component {
         chartOptions: {
           series
         }
-      })
+      }, () => {
+        setTimeout(() => {
+          this.fetchTransactionsByOffice();
+        }, CHART_POLL_TIMER);
+      });
     })
   }
   render() {

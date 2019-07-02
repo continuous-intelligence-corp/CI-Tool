@@ -3,7 +3,7 @@ import { Row, Col, Icon, Menu, Dropdown, Card } from 'antd';
 import ChartWidget from "../components/ChartWidget.js";
 import styled from "styled-components";
 import HighchartsReact from 'highcharts-react-official'
-import { fetchPrograms, fetchDruidData } from "../services/ChartService.js";
+import { CHART_POLL_TIMER, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
 import _ from "lodash";
 
 const ChartWrapperStyles = styled(Card)`
@@ -140,7 +140,11 @@ class IncomeTracker extends Component {
             }
           ]
         }
-      })
+      }, () => {
+        setTimeout(() => {
+          this.fetchTransactionsByProgram();
+        }, CHART_POLL_TIMER);
+      });
     });
   }
   render() {

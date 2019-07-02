@@ -4,7 +4,7 @@ import ChartWidget from "../components/ChartWidget.js";
 import styled from "styled-components";
 import HighchartsReact from 'highcharts-react-official'
 import _ from "lodash";
-import { fetchPrograms, fetchDruidData } from "../services/ChartService.js";
+import { CHART_POLL_TIMER, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
 const ChartWrapperStyles = styled(Card)`
   background: #fff;
 `;
@@ -164,6 +164,10 @@ class BudgetDrawdown extends Component {
             ],
           }]
         }
+      }, () => {
+        setTimeout(() => {
+          this.fetchTransactionsByProgram();
+        }, CHART_POLL_TIMER);
       });
     })
   }
