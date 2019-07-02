@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import { Row, Col, Icon, Menu, Dropdown, Card } from 'antd';
+import { Link } from "react-router-dom";
 import ChartWidget from "../components/ChartWidget.js";
 import styled from "styled-components";
 import BudgetDrawdown from "../charts/BudgetDrawdown.js";
@@ -26,7 +27,9 @@ class Dashboard extends Component {
       <StyledDashboard>
         <Row gutter={24}>
           <Col span={16}>
-            <BudgetDrawdown />
+            <Link to={"/charts/budgetdrawdown"}>
+              <BudgetDrawdown />
+            </Link>
           </Col>
           <Col span={8}>
             <DisasterLoanBudgetPie />
@@ -34,13 +37,19 @@ class Dashboard extends Component {
         </Row>
         <Row gutter={24}>
           <Col span={8}>
-            <RegionalBudget />
+            <Link to={"/charts/regionalbudget"}>
+              <RegionalBudget />
+            </Link>
           </Col>
           <Col span={8}>
-            <IncomeTracker />
+            <Link to={"/charts/incometracker"}>
+              <IncomeTracker />
+            </Link>
           </Col>
           <Col span={8}>
-            <DisasterLoan />
+            <Link to={"/charts/disasterloan"}>
+              <DisasterLoan />
+            </Link>
           </Col>
         </Row>
       </StyledDashboard>
