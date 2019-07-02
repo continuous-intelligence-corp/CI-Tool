@@ -23,7 +23,7 @@
 const DRUID_URL = "http://ec2-18-211-174-221.compute-1.amazonaws.com:18082/druid/v2"
 const CI_BACKEND_URL = "http://localhost:3000";
 
-export const CHART_POLL_TIMER = 5000;
+export const CHART_POLL_TIMER = 10000;
 export function fetchOffices(){
   return new Promise((resolve, reject) => {
     fetch(`${CI_BACKEND_URL}/offices`)
