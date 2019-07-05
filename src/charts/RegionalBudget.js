@@ -33,6 +33,11 @@ var druidQueryParams = {
 class RegionalBudget extends Component {
   state = {
     chartOptions: {
+
+      chart: {
+        height: this.props.height || null,
+      },
+      
       title: {
           text: 'Regional Budget'
       },

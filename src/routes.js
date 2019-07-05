@@ -34,13 +34,6 @@ const routes = [
   },
   {
     path: "/charts",
-    subPath: "/disasterloanbudget",
-    name: "Disaster Loan Budget",
-    icon: "pie-chart",
-    component: Charts,
-  },
-  {
-    path: "/charts",
     subPath: "/incometracker",
     name: "Income Tracker",
     icon: "line-chart",

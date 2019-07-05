@@ -38,6 +38,9 @@ var druidQueryParams = {
 class DisasterLoan extends Component {
   state = {
     chartOptions: {
+      chart: {
+        height: this.props.height || null,
+      },
       title: {
           text: 'Disaster Loan Budget Vs. Actual'
       },

@@ -58,7 +58,8 @@ class BudgetDrawdown extends Component {
     programs: [],
     chartOptions: {
       chart: {
-        type: 'waterfall'
+        type: 'waterfall',
+        height: this.props.height || null,
       },
 
       title: {

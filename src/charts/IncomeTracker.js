@@ -55,9 +55,9 @@ class IncomeTracker extends Component {
     programs: [],
     chartOptions: {
       chart: {
-        type: 'column'
+        type: 'column',
+        height: this.props.height || null,
       },
-
       title: {
         text: 'Monthly Budget'
       },
@@ -104,6 +104,12 @@ class IncomeTracker extends Component {
       series: []
     }
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.filters !== this.props.filters) {
+      console.log("filters", this.props.filters);
+    }
+  }
   componentDidMount() {
     fetchPrograms().then(programs => {
       let monthlyBudget = _.sumBy(programs, function(program) { return program.commitment; })/12;
