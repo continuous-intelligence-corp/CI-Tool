@@ -104,6 +104,41 @@ class BudgetDrawdown extends Component {
     }
   }
 
+  calculateTotalCommitment = (programs, office) => {
+    if (office) {
+      let sum = _.sumBy(Object.keys(office), function(objKey) {
+        if (objKey.includes("028")) {
+          return office[objKey];
+        }
+        return 0;
+      });
+      return sum;
+    } else if (programs && programs.length > 0) {
+      return _.sumBy(programs, function(program) {
+        return program.commitment;
+      });
+    }
+    return 0;
+  };
+
+  calculateChartData = (programs, office) => {
+    return [
+      {
+        name: "Total Budget",
+        y: this.calculateTotalCommitment(programs, office),
+        color: Highcharts.getOptions().colors[1]
+      },
+      ...programs.map(program => {
+        return { ...program, y: 0, program_code: program.code === 28001 ? "028-001" : program.code === 28002 ? "028-002": null };
+      }),
+      {
+        name: 'Budget Remaining',
+        isSum: true,
+        color: Highcharts.getOptions().colors[1]
+      }
+    ];
+  }
+
   componentDidMount() {
     fetchPrograms().then(programs => {
       this.setState({
@@ -111,21 +146,7 @@ class BudgetDrawdown extends Component {
         chartOptions: {
           series: [{
             ...this.state.chartOptions.series[0],
-            data: [
-              {
-                name: "Total Budget",
-                y: _.sumBy(programs, function(program) { return program.commitment; }),
-                color: Highcharts.getOptions().colors[1]
-              },
-              ...programs.map(program => {
-                return { ...program, y: 0, program_code: program.code === 28001 ? "028-001" : program.code === 28002 ? "028-002": null };
-              }),
-              {
-                name: 'Budget Remaining',
-                isSum: true,
-                color: Highcharts.getOptions().colors[1]
-              }
-            ],
+            data: this.calculateChartData(programs),
           }]
         }
       }, () => {
@@ -135,7 +156,14 @@ class BudgetDrawdown extends Component {
   }
 
   fetchTransactionsByProgram = () => {
-    fetchDruidData(druidQueryParams).then(data => {
+    const { filters } = this.state;
+    let queryParams;
+    if (filters) {
+      queryParams = { ...druidQueryParams, ...filters };
+    } else {
+      queryParams = druidQueryParams;
+    }
+    fetchDruidData(queryParams).then(data => {
       let computedResults = [];//sum__TotalSpent
       let chartData = this.state.chartOptions.series[0].data;
       let druidData = data[0].result;
@@ -171,6 +199,51 @@ class BudgetDrawdown extends Component {
         }, CHART_POLL_TIMER);
       });
     })
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.filters !== prevProps.filters) {
+      let chartName = "";
+      let filters = {};
+      let filterOffice = null;
+      if (this.props.filters.officeId) {
+        this.props.offices.map(office => {
+          if (office.id === this.props.filters.officeId) {
+            chartName = `${office.name} Budget Drawdown`;
+            filterOffice = office;
+          }
+        });
+        filters = {
+          filter: {
+            type: "selector",
+            dimension: "office_id",
+            value: `O${this.props.filters.officeId}`
+          }
+        };
+      } else {
+        chartName = "Budget Drawdown";
+      }
+      this.setState({
+        filters,
+        chartOptions: {
+          ...this.state.chartOptions,
+          title: { text: chartName },
+          series: [{
+            ...this.state.chartOptions.series[0],
+            data: [
+              {
+                name: "Total Budget",
+                y: this.calculateTotalCommitment(this.props.programs, filterOffice),
+                color: Highcharts.getOptions().colors[1]
+              },
+              ..._.drop(this.state.chartOptions.series[0].data)
+            ]
+          }]
+        },
+      }, () => {
+        this.fetchTransactionsByProgram();
+      });
+    }
   }
   render() {
     const { chartOptions } = this.state;

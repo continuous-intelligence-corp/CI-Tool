@@ -29,12 +29,16 @@ class Charts extends React.Component {
     });
   }
 
+  handleSetFilters = filters => {
+    this.setState({ filters });
+  }
+
   renderChart() {
-    const { filters } = this.state;
+    const { filters, offices, programs } = this.state;
     let url = this.props.location.pathname;
     switch (url) {
       case "/charts/budgetdrawdown":
-        return <BudgetDrawdown filters={filters} height={500} />;
+        return <BudgetDrawdown offices={offices} programs={programs} filters={filters} height={500} />;
       case "/charts/disasterloan":
         return <DisasterLoan filters={filters} height={500} />;
       case "/charts/incometracker":
@@ -55,7 +59,12 @@ class Charts extends React.Component {
             {this.renderChart()}
           </Col>
           <Col span={6}>
-            <ChartController offices={offices} programs={programs} />
+            <ChartController
+              chartRoute={this.props.location.pathname}
+              offices={offices}
+              programs={programs}
+              handleSetFilters={this.handleSetFilters}
+            />
           </Col>
         </Row>
       </StyledCharts>
