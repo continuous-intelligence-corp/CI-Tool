@@ -47,9 +47,7 @@ class Dashboard extends Component {
             </Link>
           </Col>
           <Col span={8}>
-            <Link to={"/charts/disasterloan"}>
-              <DisasterLoan />
-            </Link>
+            <DisasterLoan />
           </Col>
         </Row>
       </StyledDashboard>

@@ -76,6 +76,53 @@ class ChartForm extends Component {
     return (
       <StyledChartControler onSubmit={this.handleSubmit} className="login-form">
 
+        <Form.Item label="Program">
+          {getFieldDecorator('programCode', {
+            rules: [],
+          })(
+            <Select placeholder="Program">
+            {programs && programs.map(program => (
+              <Option value={program.code}>{program.name}</Option>
+            ))}
+            </Select>,
+          )}
+        </Form.Item>
+
+        {this.renderActions()}
+      </StyledChartControler>
+    );
+  }
+
+  renderIncomeTrackerOptions = () => {
+    const { form, offices, programs } = this.props;
+    const { getFieldDecorator } = form;
+    return (
+      <StyledChartControler onSubmit={this.handleSubmit} className="login-form">
+        <Form.Item label="Chart Type">
+          {getFieldDecorator('chartType', {
+            rules: [],
+          })(
+            <Select placeholder="Chart Type">
+              <Option value="area">Area</Option>
+              <Option value="bar">Bar</Option>
+              <Option value="column">Column</Option>
+              <Option value="line">Line</Option>
+            </Select>,
+          )}
+        </Form.Item>
+
+        <Form.Item label="Program">
+          {getFieldDecorator('programCode', {
+            rules: [],
+          })(
+            <Select placeholder="Program">
+            {programs && programs.map(program => (
+              <Option value={program.code}>{program.name}</Option>
+            ))}
+            </Select>,
+          )}
+        </Form.Item>
+
         <Form.Item label="Office">
           {getFieldDecorator('officeId', {
             rules: [],
@@ -92,17 +139,14 @@ class ChartForm extends Component {
       </StyledChartControler>
     );
   }
-
   render() {
     const { chartRoute } = this.props;
 
     switch(chartRoute) {
       case "/charts/budgetdrawdown":
         return this.renderBudgetDrawdownOptions();
-      // case "/charts/disasterloan":
-      //   return this.renderDisasterLoanOptions();
       case "/charts/incometracker":
-        return this.renderRegionalBudgetOptions();
+        return this.renderIncomeTrackerOptions();
       case "/charts/regionalbudget":
         return this.renderRegionalBudgetOptions();
       default:
@@ -114,62 +158,10 @@ const ChartController = Form.create({ name: 'chart_controls' })(ChartForm);
 
 export default ChartController;
 
-/*
-<StyledChartControler onSubmit={this.handleSubmit} className="login-form">
-  <Form.Item label="Chart Type" hasFeedback>
-    {getFieldDecorator('chart-type', {
-      rules: [{ required: true, message: 'Please select a chart type!' }],
-    })(
-      <Select placeholder="Please select a chart type">
-        <Option value="area">Area</Option>
-        <Option value="bar">Bar</Option>
-        <Option value="column">Column</Option>
-        <Option value="line">Line</Option>
-      </Select>,
-    )}
-  </Form.Item>
-
-  <Form.Item label="Offices">
-    {getFieldDecorator('officeIds', {
-      rules: [
-        { required: true, message: 'Please select Offices to filter by!', type: 'array' },
-      ],
-    })(
-      <Select mode="multiple" placeholder="Please select Offices to filter by">
-        {offices && offices.map(office => (
-          <Option value={office.id}>{office.name}</Option>
-        ))}
-      </Select>,
-    )}
-  </Form.Item>
-
-  <Form.Item label="Programs">
-    {getFieldDecorator('programIds', {
-      rules: [
-        { required: true, message: 'Please select Programs to filter by!', type: 'array' },
-      ],
-    })(
-      <Select mode="multiple" placeholder="Please select Programs to filter by">
-        {programs && programs.map(program => (
-          <Option value={program.code}>{program.name}</Option>
-        ))}
-      </Select>,
-    )}
-  </Form.Item>
-
-  <Form.Item label="Pick Dates">
-    {getFieldDecorator('date', {
-      rules: [{ type: 'array', required: true, message: 'Please select time!' }],
-    })(
-      <RangePicker disabledDate={this.disabledDate} />
-    )}
-  </Form.Item>
-
-
-  <Form.Item>
-    <Button style={{ float: "right" }}type="primary" htmlType="submit" className="submit-form-button">
-      Submit
-    </Button>
-  </Form.Item>
-</StyledChartControler>
- */
+// <Form.Item label="Pick Dates">
+//   {getFieldDecorator('date', {
+//     rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+//   })(
+//     <RangePicker disabledDate={this.disabledDate} />
+//   )}
+// </Form.Item>

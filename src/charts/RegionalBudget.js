@@ -32,14 +32,15 @@ var druidQueryParams = {
 };
 class RegionalBudget extends Component {
   state = {
+    offices: [],
     chartOptions: {
 
       chart: {
         height: this.props.height || null,
       },
-      
+
       title: {
-          text: 'Regional Budget'
+          text: 'Regional Budget By Office'
       },
 
       tooltip: {
@@ -122,7 +123,14 @@ class RegionalBudget extends Component {
   }
 
   fetchTransactionsByOffice = () => {
-    fetchDruidData(druidQueryParams).then(data => {
+    const { filters } = this.state;
+    let queryParams;
+    if (filters) {
+      queryParams = { ...druidQueryParams, ...filters };
+    } else {
+      queryParams = druidQueryParams;
+    }
+    fetchDruidData(queryParams).then(data => {
       // let computedResults = [];//sum__TotalSpent
       let offices = this.state.offices;
       let druidData = data[0].result;
@@ -149,6 +157,41 @@ class RegionalBudget extends Component {
         }, CHART_POLL_TIMER);
       });
     })
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.filters !== prevProps.filters) {
+      let chartName = "";
+      let filters = {};
+      let filterProgram = null;
+      if (this.props.filters.programCode) {
+        this.props.programs.map(program => {
+          if (program.code === this.props.filters.programCode) {
+            chartName = `${program.name} Budget By Office`;
+            filterProgram = program;
+          }
+        });
+        filters = {
+          filter: {
+            type: "selector",
+            dimension: "program_code",
+            value: `${filterProgram.code}`
+          }
+        };
+      } else {
+        chartName = "Regional Budget By Office"
+      }
+      this.setState({
+        filters,
+        chartOptions: {
+          ...this.state.chartOptions,
+          title: { text: chartName },
+
+        }
+      }, () => {
+        this.fetchTransactionsByOffice();
+      });
+    }
   }
   render() {
     return (

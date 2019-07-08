@@ -3,7 +3,6 @@ import { Row, Col } from 'antd';
 import ChartController from "../components/ChartController";
 import { fetchOffices, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
 import BudgetDrawdown from "../charts/BudgetDrawdown";
-import DisasterLoan from "../charts/DisasterLoan";
 import IncomeTracker from "../charts/IncomeTracker";
 import RegionalBudget from "../charts/RegionalBudget";
 import styled from "styled-components";
@@ -35,16 +34,15 @@ class Charts extends React.Component {
 
   renderChart() {
     const { filters, offices, programs } = this.state;
+    console.log("programs", programs);
     let url = this.props.location.pathname;
     switch (url) {
       case "/charts/budgetdrawdown":
         return <BudgetDrawdown offices={offices} programs={programs} filters={filters} height={500} />;
-      case "/charts/disasterloan":
-        return <DisasterLoan filters={filters} height={500} />;
       case "/charts/incometracker":
-        return <IncomeTracker filters={filters} height={500} />;
+        return <IncomeTracker programs={programs} offices={offices} filters={filters} height={500} />;
       case "/charts/regionalbudget":
-        return <RegionalBudget filters={filters} height={500} />;
+        return <RegionalBudget programs={programs} filters={filters} height={500} />;
       default:
         return null;
     }

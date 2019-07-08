@@ -104,12 +104,6 @@ class IncomeTracker extends Component {
       series: []
     }
   };
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.filters !== this.props.filters) {
-      console.log("filters", this.props.filters);
-    }
-  }
   componentDidMount() {
     fetchPrograms().then(programs => {
       let monthlyBudget = _.sumBy(programs, function(program) { return program.commitment; })/12;
@@ -130,7 +124,14 @@ class IncomeTracker extends Component {
     })
   }
   fetchTransactionsByProgram = () => {
-    fetchDruidData(druidQueryParams).then(data => {
+    const { filters } = this.state;
+    let queryParams;
+    if (filters) {
+      queryParams = { ...druidQueryParams, ...filters };
+    } else {
+      queryParams = druidQueryParams;
+    }
+    fetchDruidData(queryParams).then(data => {
       let actualData = Array.from({length: 12}, () => 0);
       data.map(dataMonth => {
         let date = new Date(dataMonth.timestamp);
@@ -152,6 +153,80 @@ class IncomeTracker extends Component {
         }, CHART_POLL_TIMER);
       });
     });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.filters !== prevProps.filters) {
+      let chartName = "";
+      let filters = {};
+      let filterProgram = null;
+      let filterOffice = null;
+      const { officeId, programCode, chartType } = this.props.filters;
+      if (officeId || programCode) {
+        if (programCode) {
+          this.props.programs.map(program => {
+            if (program.code === programCode) {
+              chartName = `${program.name} Monthly Budget`;
+              filterProgram = program;
+            }
+          });
+          filters = {
+            filter: {
+              type: "selector",
+              dimension: "program_code",
+              value: `${filterProgram.code}`
+            }
+          };
+        }
+        if (officeId) {
+          this.props.offices.map(office => {
+            if (office.id === officeId) {
+              if (chartName) {
+                chartName += ` For ${office.name}`;
+              } else {
+                chartName = `Monthly Budget For ${office.name}`;
+              }
+              filterOffice = office;
+            }
+          });
+          let officeFilter = {
+            type: "selector",
+            dimension: "office_id",
+            value: `${filterOffice.id}`
+          };
+          if (filters.filter) {
+            filters = {
+              filter: {
+                type: "and",
+                fields: [
+                  filters.filter,
+                  officeFilter
+                ]
+              }
+            }
+          } else {
+            filters = {
+              filter: officeFilter
+            };
+          }
+        }
+      } else {
+        chartName = "Monthly Budget";
+      }
+      this.setState({
+        filters,
+        chartOptions: {
+          ...this.state.chartOptions,
+          title: { text: chartName },
+          chart: {
+            type: chartType || 'column',
+            height: this.props.height || null,
+          },
+        }
+      }, () => {
+        this.fetchTransactionsByProgram();
+      });
+    }
   }
   render() {
     const { chartOptions } = this.state;
