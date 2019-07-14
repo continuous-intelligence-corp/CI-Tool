@@ -7,6 +7,7 @@ const CI_BACKEND_URL = "http://3.221.2.243:3000";
 
 const DRUID_URL = `${CI_BACKEND_URL}/druid/v2`;
 export const CHART_POLL_TIMER = 10000;
+export const DISASTER_LOAN_PROGRAM_CODE = "028-017";
 export function fetchOffices(){
   return new Promise((resolve, reject) => {
     fetch(`${CI_BACKEND_URL}/offices`)

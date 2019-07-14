@@ -129,7 +129,7 @@ class BudgetDrawdown extends Component {
         color: Highcharts.getOptions().colors[1]
       },
       ...programs.map(program => {
-        return { ...program, y: 0, program_code: program.code === 28001 ? "028-001" : program.code === 28002 ? "028-002": null };
+        return { ...program, y: 0, program_code: program.code };
       }),
       {
         name: 'Budget Remaining',
@@ -141,6 +141,7 @@ class BudgetDrawdown extends Component {
 
   componentDidMount() {
     fetchPrograms().then(programs => {
+      console.log("programs", programs);
       this.setState({
         programs,
         chartOptions: {
@@ -217,7 +218,7 @@ class BudgetDrawdown extends Component {
           filter: {
             type: "selector",
             dimension: "office_id",
-            value: `O${this.props.filters.officeId}`
+            value: this.props.filters.officeId
           }
         };
       } else {

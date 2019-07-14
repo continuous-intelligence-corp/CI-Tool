@@ -133,7 +133,6 @@ class NavigationHeader extends React.Component {
   render() {
     const { dataGenInterval } = this.state;
     const { curRoute, routes } = this.props;
-    console.log("curRoute", curRoute);
     return (
       <NavigationHeaderWithStyles
         trigger={null}
@@ -209,7 +208,7 @@ class NavigationHeader extends React.Component {
                 <Option value="60">60</Option>
                 <Option value="600">600</Option>
               </Select>
-            )}  
+            )}
             <Tooltip title="Search">
               <a
                 target="_blank"

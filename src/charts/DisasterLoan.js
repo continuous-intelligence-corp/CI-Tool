@@ -4,7 +4,7 @@ import ChartWidget from "../components/ChartWidget.js";
 import styled from "styled-components";
 import HighchartsReact from 'highcharts-react-official';
 import _ from "lodash";
-import { CHART_POLL_TIMER, fetchOffices, fetchDruidData } from "../services/ChartService.js";
+import { CHART_POLL_TIMER, DISASTER_LOAN_PROGRAM_CODE, fetchOffices, fetchDruidData } from "../services/ChartService.js";
 
 const ChartWrapperStyles = styled(Card)`
   background: #fff;
@@ -29,7 +29,7 @@ var druidQueryParams = {
     "filter": {
       "type": "selector",
       "dimension": "program_code",
-      "value": "028-001"
+      "value": DISASTER_LOAN_PROGRAM_CODE
     },
     "threshold": 10000,
     "metric": "sum__TotalSpent",
@@ -103,7 +103,7 @@ class DisasterLoan extends Component {
         let budget = 0;
 
         Object.keys(office).map(key => {
-          if (key.includes("028-017")) {
+          if (key.includes(DISASTER_LOAN_PROGRAM_CODE)) {
             budget += office[key];
           }
         });
@@ -130,7 +130,7 @@ class DisasterLoan extends Component {
       let offices = this.state.offices;
       let druidData = data[0].result;
       druidData.map(druidOfficeData => {
-        let officeId = parseInt(_.trimStart(druidOfficeData["office_id"], 'O'), 10);
+        let officeId = druidOfficeData["office_id"];
         offices.map(chartOfficeData => {
           if (chartOfficeData.id === officeId) {
             chartOfficeData.actual = druidOfficeData["sum__TotalSpent"];

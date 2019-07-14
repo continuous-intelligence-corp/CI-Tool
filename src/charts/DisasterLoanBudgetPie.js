@@ -4,7 +4,7 @@ import ChartWidget from "../components/ChartWidget.js";
 import styled from "styled-components";
 import HighchartsReact from 'highcharts-react-official';
 import _ from "lodash";
-import { fetchOffices, fetchDruidData } from "../services/ChartService.js";
+import { DISASTER_LOAN_PROGRAM_CODE, fetchOffices, fetchDruidData } from "../services/ChartService.js";
 
 const ChartWrapperStyles = styled(Card)`
   background: #fff;
@@ -39,7 +39,7 @@ class DisasterLoanBudgetPie extends Component {
 
   componentDidMount() {
     fetchOffices().then(offices => {
-      let sum = _.sumBy(offices, function(office) { return office["028-001"] });
+      let sum = _.sumBy(offices, function(office) { return office[DISASTER_LOAN_PROGRAM_CODE] });
 
       this.setState({
         offices,
@@ -49,7 +49,7 @@ class DisasterLoanBudgetPie extends Component {
             colorByPoint: true,
             data: offices.map(office => {
               console.log("office", office);
-              return [office.name, Math.round(office["028-001"]/sum*100)]
+              return [office.name, Math.round(office[DISASTER_LOAN_PROGRAM_CODE]/sum*100)]
             })
           }],
           title: {
