@@ -52,3 +52,33 @@ export function fetchDruidData(params){
     });
   });
 }
+
+export function fetchProperty(){
+  return new Promise((resolve, reject) => {
+    fetch(`${CI_BACKEND_URL}/property`)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(property) {
+      resolve(property);
+    });
+  });
+}
+
+export function setProperty(value){
+  return new Promise((resolve, reject) => {
+    fetch(`${CI_BACKEND_URL}/property`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ key: value }),
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(property) {
+      resolve(property);
+    });
+  });
+}

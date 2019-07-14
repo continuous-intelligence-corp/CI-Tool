@@ -1,12 +1,13 @@
 import React from "react";
-import { Avatar, Badge, Dropdown, Layout, Icon, Menu, Tooltip } from 'antd';
+import { Avatar, Badge, Dropdown, Layout, Icon, Menu, Tooltip, Select } from 'antd';
 import ciLogo2 from "../assets/ciLogo2.png";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { fetchProperty, setProperty } from "../services/ChartService.js";
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
-
+const { Option } = Select;
 const NavigationHeaderWithStyles = styled(Header)`
   display: flex;
   justify-content: space-between;
@@ -44,6 +45,14 @@ const NavigationHeaderWithStyles = styled(Header)`
     justify-content: flex-end;
     svg {
       color: #7F8A94;
+    }
+    .ant-select {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .ant-select-selection {
+        background: #CCCCCC;
+      }
     }
     .right-icon-selection {
       display: inline-block;
@@ -97,8 +106,34 @@ const menu = (
 </div>
 */
 class NavigationHeader extends React.Component {
+  state = {
+    dataGenInterval: null,
+  }
+
+  updateDataGenValue = (value) => {
+    setProperty(value).then((response) => {
+      if (response && response.message && response.message.includes("successfully")) {
+        this.setDataGenValue(value);
+      }
+    });
+  }
+
+  setDataGenValue = (value) => {
+    if (value) {
+      this.setState({ dataGenInterval: value });
+    }
+  }
+
+  componentDidMount() {
+    fetchProperty().then(property => {
+      let value = property && property[0] && property[0].value;
+      this.setDataGenValue(value);
+    });
+  }
   render() {
+    const { dataGenInterval } = this.state;
     const { curRoute, routes } = this.props;
+    console.log("curRoute", curRoute);
     return (
       <NavigationHeaderWithStyles
         trigger={null}
@@ -165,6 +200,16 @@ class NavigationHeader extends React.Component {
           </Menu>
         </div>
           <div className="right-icons-section">
+            {curRoute === "/pipelines" && (
+              <Select value={dataGenInterval} style={{ width: 120 }} onChange={this.updateDataGenValue}>
+                <Option value="1">1</Option>
+                <Option value="5">5</Option>
+                <Option value="10">10</Option>
+                <Option value="30">30</Option>
+                <Option value="60">60</Option>
+                <Option value="600">600</Option>
+              </Select>
+            )}  
             <Tooltip title="Search">
               <a
                 target="_blank"
