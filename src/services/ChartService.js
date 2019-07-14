@@ -1,31 +1,9 @@
-// https://cors-anywhere.herokuapp.com/ -> MiddleWare - add it to begging of URL to get around CORS
-// fetch(
-//     "http://ec2-18-211-174-221.compute-1.amazonaws.com:18082/druid/v2",
-//     {
-//       method: 'POST', // *GET, POST, PUT, DELETE, etc.
-//       //mode: 'cors', // no-cors, cors, *same-origin
-//       headers: {
-//           'Content-Type': 'application/json',
-//           // 'Content-Type': 'application/x-www-form-urlencoded',
-//       },
-//       body: JSON.stringify(data), // body data type must match "Content-Type" header
-//     },
-//   )
-//   .then(function(response) {
-//     console.log("response", response);
-//     // The response is a Response instance.
-//     // You parse the data into a useable format using `.json()`
-//     return response.json();
-//   }).then(function(data) {
-//     // `data` is the parsed version of the JSON returned from the above endpoint.
-//     console.log("MY CHART DATA", data);
-//   });
 // const DRUID_URL = "http://ec2-18-211-174-221.compute-1.amazonaws.com:18082/druid/v2"
-
+// curl -X GET "http://3.221.2.243:3000/property"
 // Local
-const CI_BACKEND_URL = "http://localhost:3000";
+// const CI_BACKEND_URL = "http://localhost:3000";
 // Production
-// const CI_BACKEND_URL = "http://ec2-54-242-193-150.compute-1.amazonaws.com:3000";
+const CI_BACKEND_URL = "http://3.221.2.243:3000";
 
 const DRUID_URL = `${CI_BACKEND_URL}/druid/v2`;
 export const CHART_POLL_TIMER = 10000;
