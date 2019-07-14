@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
     "deploy": "aws s3 cp --recursive ./public s3://ci-tool-frontend"
   },
   "keywords": [],

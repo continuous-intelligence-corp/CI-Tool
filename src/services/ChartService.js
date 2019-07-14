@@ -20,13 +20,14 @@
 //     // `data` is the parsed version of the JSON returned from the above endpoint.
 //     console.log("MY CHART DATA", data);
 //   });
-const DRUID_URL = "http://ec2-18-211-174-221.compute-1.amazonaws.com:18082/druid/v2"
+// const DRUID_URL = "http://ec2-18-211-174-221.compute-1.amazonaws.com:18082/druid/v2"
 
 // Local
-// const CI_BACKEND_URL = "http://localhost:3000";
+const CI_BACKEND_URL = "http://localhost:3000";
 // Production
-const CI_BACKEND_URL = "http://ec2-54-242-193-150.compute-1.amazonaws.com:3000";
+// const CI_BACKEND_URL = "http://ec2-54-242-193-150.compute-1.amazonaws.com:3000";
 
+const DRUID_URL = `${CI_BACKEND_URL}/druid/v2`;
 export const CHART_POLL_TIMER = 10000;
 export function fetchOffices(){
   return new Promise((resolve, reject) => {
@@ -57,7 +58,7 @@ export function fetchPrograms(){
 export function fetchDruidData(params){
   return new Promise((resolve, reject) => {
     fetch(
-      DRUID_URL,
+      `${DRUID_URL}`,
       {
         method: 'POST',
         headers: {
