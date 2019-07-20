@@ -126,15 +126,15 @@ class BudgetDrawdown extends Component {
       {
         name: "Total Budget",
         y: this.calculateTotalCommitment(programs, office),
-        color: Highcharts.getOptions().colors[1]
+        color: Highcharts.getOptions().colors[9]
       },
       ...programs.map(program => {
-        return { ...program, y: 0, program_code: program.code, color: Highcharts.getOptions().colors[0] };
+        return { ...program, y: 0, program_code: program.code, color: Highcharts.getOptions().colors[5] };
       }),
       {
         name: 'Budget Remaining',
         isSum: true,
-        color: Highcharts.getOptions().colors[1]
+        color: Highcharts.getOptions().colors[9]
       }
     ];
   }
@@ -188,7 +188,7 @@ class BudgetDrawdown extends Component {
               {
                 name: 'Budget Remaining',
                 isSum: true,
-                color: Highcharts.getOptions().colors[1]
+                color: Highcharts.getOptions().colors[9]
               }
             ],
           }]
@@ -234,7 +234,7 @@ class BudgetDrawdown extends Component {
               {
                 name: "Total Budget",
                 y: this.calculateTotalCommitment(this.props.programs, filterOffice),
-                color: Highcharts.getOptions().colors[1]
+                color: Highcharts.getOptions().colors[9]
               },
               ..._.drop(this.state.chartOptions.series[0].data)
             ]

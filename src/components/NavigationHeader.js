@@ -9,6 +9,7 @@ const { Header } = Layout;
 const { SubMenu } = Menu;
 const { Option } = Select;
 const NavigationHeaderWithStyles = styled(Header)`
+
   display: flex;
   justify-content: space-between;
   .left-container {
@@ -30,7 +31,7 @@ const NavigationHeaderWithStyles = styled(Header)`
     }
 
     h1 {
-      color: #fff;
+      color: #E0E0E3;
       line-height: 20px;
       display: inline-block;
       margin: 12px 0 0 12px;
@@ -40,11 +41,11 @@ const NavigationHeaderWithStyles = styled(Header)`
     }
   }
   .right-icons-section {
-    color: #7F8A94;
+    color: #E0E0E3;
     display: flex;
     justify-content: flex-end;
     svg {
-      color: #7F8A94;
+      color: #E0E0E3;
     }
     .ant-select {
       display: flex;
@@ -65,7 +66,7 @@ const NavigationHeaderWithStyles = styled(Header)`
       background: #1890FF;
       cursor: pointer;
       svg {
-        color: #fff;
+        color: #E0E0E3;
       }
     }
     .avatar-wrapper {

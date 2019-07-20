@@ -8,6 +8,11 @@ const StyledChartControler = styled(Form)`
   padding: 25px !important;
   height: 550px;
   border: 1px solid rgb(232, 232, 232);
+  .ant-form-item-label {
+    label {
+      color: #E0E0E3;
+    }
+  }
 `;
 const { Option } = Select;
 const { RangePicker } = DatePicker;

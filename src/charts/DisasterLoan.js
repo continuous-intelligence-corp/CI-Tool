@@ -51,6 +51,9 @@ class DisasterLoan extends Component {
               'Total Spent: {point.actual}<br>' +
               'Budget Remaining: {point.remain}'
       },
+      mapNavigation: {
+                    enabled: true
+      },
 
       xAxis: {
           crosshair: {
@@ -92,7 +95,7 @@ class DisasterLoan extends Component {
           name: 'Offices',
           data: [],
           maxSize: '15%',
-          color: H.getOptions().colors[0]
+          color: H.getOptions().colors[10]
       }]
     }
   }

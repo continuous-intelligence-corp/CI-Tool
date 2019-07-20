@@ -50,6 +50,10 @@ class RegionalBudget extends Component {
               'Budget Remaining: {point.remain}'
       },
 
+      mapNavigation: {
+                    enabled: true
+      },
+
       xAxis: {
           crosshair: {
               zIndex: 5,

@@ -11,6 +11,10 @@ const StyledCharts = styled.div`
   .ant-row {
     margin-top: 25px;
   }
+
+  .ant-card-body {
+    background: #353537;
+  }
 `;
 class Charts extends React.Component {
   state = {
