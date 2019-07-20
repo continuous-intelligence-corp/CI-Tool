@@ -90,7 +90,7 @@ class RegionalBudget extends Component {
           name: 'Offices',
           data: [],
           maxSize: '20%',
-          color: H.getOptions().colors[2]
+          color: H.getOptions().colors[5]
       }]
     }
   }

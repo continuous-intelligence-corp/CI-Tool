@@ -129,7 +129,7 @@ class BudgetDrawdown extends Component {
         color: Highcharts.getOptions().colors[1]
       },
       ...programs.map(program => {
-        return { ...program, y: 0, program_code: program.code };
+        return { ...program, y: 0, program_code: program.code, color: Highcharts.getOptions().colors[0] };
       }),
       {
         name: 'Budget Remaining',
