@@ -23,7 +23,7 @@ class DisasterLoanBudgetPie extends Component {
 	    },
 
       title: {
-          verticalAlign: 'middle',
+          // verticalAlign: 'middle',
           floating: true,
           text: 'Disaster Loan Budget By Office'
       },
@@ -48,14 +48,13 @@ class DisasterLoanBudgetPie extends Component {
             name: 'Budget',
             colorByPoint: true,
             data: offices.map(office => {
-              console.log("office", office);
               return [office.name, Math.round(office[DISASTER_LOAN_PROGRAM_CODE]/sum*100)]
             })
           }],
-          title: {
+          subtitle: {
             verticalAlign: 'middle',
             floating: true,
-            text: `Total: ${sum/1000000}M`
+            text: `Total: ${Math.round(sum/1000000)}M`
           }
         }
       });

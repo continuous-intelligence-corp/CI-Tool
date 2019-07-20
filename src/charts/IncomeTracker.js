@@ -106,7 +106,7 @@ class IncomeTracker extends Component {
   };
   componentDidMount() {
     fetchPrograms().then(programs => {
-      let monthlyBudget = _.sumBy(programs, function(program) { return program.commitment; })/12;
+      let monthlyBudget = _.sumBy(programs, function(program) { return program.target; })/12;
       this.setState({
         programs,
         chartOptions: {

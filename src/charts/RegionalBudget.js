@@ -131,7 +131,6 @@ class RegionalBudget extends Component {
       queryParams = druidQueryParams;
     }
     fetchDruidData(queryParams).then(data => {
-      console.log("druidData", druidData)
       // let computedResults = [];//sum__TotalSpent
       let offices = this.state.offices;
       let druidData = data[0].result;

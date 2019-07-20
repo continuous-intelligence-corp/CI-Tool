@@ -6,7 +6,7 @@
 const CI_BACKEND_URL = "http://3.221.2.243:3000";
 
 const DRUID_URL = `${CI_BACKEND_URL}/druid/v2`;
-export const CHART_POLL_TIMER = 10000;
+export var CHART_POLL_TIMER = 10000;
 export const DISASTER_LOAN_PROGRAM_CODE = "028-017";
 export function fetchOffices(){
   return new Promise((resolve, reject) => {
@@ -61,6 +61,9 @@ export function fetchProperty(){
       return response.json();
     })
     .then(function(property) {
+      if (property && property[0] && property[0].value) {
+        CHART_POLL_TIMER = property[0].value * 1000;
+      }
       resolve(property);
     });
   });
@@ -76,6 +79,7 @@ export function setProperty(value){
       body: JSON.stringify({ key: value }),
     })
     .then(function(response) {
+      CHART_POLL_TIMER = value * 1000;
       return response.json();
     })
     .then(function(property) {

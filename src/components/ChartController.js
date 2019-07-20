@@ -18,7 +18,6 @@ class ChartForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         if (this.props.handleSetFilters) {
           this.props.handleSetFilters(values);
         }

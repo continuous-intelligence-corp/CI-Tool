@@ -115,7 +115,7 @@ class BudgetDrawdown extends Component {
       return sum;
     } else if (programs && programs.length > 0) {
       return _.sumBy(programs, function(program) {
-        return program.commitment;
+        return program.target;
       });
     }
     return 0;
@@ -141,7 +141,6 @@ class BudgetDrawdown extends Component {
 
   componentDidMount() {
     fetchPrograms().then(programs => {
-      console.log("programs", programs);
       this.setState({
         programs,
         chartOptions: {
