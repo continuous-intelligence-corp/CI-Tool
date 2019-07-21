@@ -47,7 +47,7 @@ var druidQueryParams = {
     "period": "P1M"
   },
   "postAggregations": [],
-  "intervals": "1970-01-01T00:00:00+00:00/1970-12-31T00:00:00+00:00",
+  "intervals": "2019-01-01T00:00:00+00:00/2019-12-31T00:00:00+00:00",
 };
 
 class IncomeTracker extends Component {
