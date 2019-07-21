@@ -4,7 +4,7 @@ import ChartWidget from "../components/ChartWidget.js";
 import styled from "styled-components";
 import HighchartsReact from 'highcharts-react-official';
 import _ from "lodash";
-import { DRUID_DATA_SOURCE, CHART_POLL_TIMER, fetchOffices, fetchDruidData } from "../services/ChartService.js";
+import { setDruidDataSourceForQuery, DRUID_DATA_SOURCE, CHART_POLL_TIMER, fetchOffices, fetchDruidData } from "../services/ChartService.js";
 const ChartWrapperStyles = styled(Card)`
   background: #fff;
 `;
@@ -99,6 +99,7 @@ class RegionalBudget extends Component {
   }
 
   componentDidMount() {
+    setDruidDataSourceForQuery(druidQueryParams);
     fetchOffices().then(offices => {
       offices = offices.map(office => {
         let budget = 0;

@@ -6,7 +6,7 @@
 const CI_BACKEND_URL = "http://3.221.2.243:3000";
 
 const DRUID_URL = `${CI_BACKEND_URL}/druid/v2`;
-export const DRUID_DATA_SOURCE = "transaction3";
+export var DRUID_DATA_SOURCE = "transaction2";
 export var CHART_POLL_TIMER = 10000;
 export const DISASTER_LOAN_PROGRAM_CODE = "028-017";
 export function fetchOffices(){
@@ -87,4 +87,17 @@ export function setProperty(value){
       resolve(property);
     });
   });
+}
+
+
+export function setDruidDataSource(value){
+  return new Promise((resolve, reject) => {
+    DRUID_DATA_SOURCE = value;
+    resolve();
+  });
+}
+
+
+export function setDruidDataSourceForQuery(druidQueryParams) {
+  druidQueryParams.dataSource = DRUID_DATA_SOURCE;
 }

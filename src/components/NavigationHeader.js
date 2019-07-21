@@ -3,7 +3,7 @@ import { Avatar, Badge, Dropdown, Layout, Icon, Menu, Tooltip, Select } from 'an
 import ciLogo2 from "../assets/ciLogo2.png";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { fetchProperty, setProperty } from "../services/ChartService.js";
+import { DRUID_DATA_SOURCE, setDruidDataSource, fetchProperty, setProperty } from "../services/ChartService.js";
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
@@ -109,6 +109,7 @@ const menu = (
 class NavigationHeader extends React.Component {
   state = {
     dataGenInterval: null,
+    druidDataSource: null
   }
 
   updateDataGenValue = (value) => {
@@ -118,7 +119,17 @@ class NavigationHeader extends React.Component {
       }
     });
   }
+  updateDruidDataSource = (value) => {
+    setDruidDataSource(value).then(() => {
+      this.setDruidDataSource(value);
+    });
+  }
 
+  setDruidDataSource = value => {
+    this.setState({
+      druidDataSource: value
+    });
+  }
   setDataGenValue = (value) => {
     if (value) {
       this.setState({ dataGenInterval: value });
@@ -129,10 +140,11 @@ class NavigationHeader extends React.Component {
     fetchProperty().then(property => {
       let value = property && property[0] && property[0].value;
       this.setDataGenValue(value);
+      this.setDruidDataSource(DRUID_DATA_SOURCE);
     });
   }
   render() {
-    const { dataGenInterval } = this.state;
+    const { dataGenInterval, druidDataSource } = this.state;
     const { curRoute, routes } = this.props;
     return (
       <NavigationHeaderWithStyles
@@ -200,6 +212,15 @@ class NavigationHeader extends React.Component {
           </Menu>
         </div>
           <div className="right-icons-section">
+            {curRoute === "/pipelines" && (
+              <Select value={druidDataSource} style={{ width: 120 }} onChange={this.updateDruidDataSource}>
+                <Option value="transaction2">transaction2</Option>
+                <Option value="transaction3">transaction3</Option>
+                <Option value="transaction4">transaction4</Option>
+                <Option value="transaction5">transaction5</Option>
+                <Option value="transaction6">transaction6</Option>
+              </Select>
+            )}
             {curRoute === "/pipelines" && (
               <Select value={dataGenInterval} style={{ width: 120 }} onChange={this.updateDataGenValue}>
                 <Option value="1">1</Option>

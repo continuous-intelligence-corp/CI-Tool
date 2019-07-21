@@ -3,7 +3,7 @@ import { Row, Col, Icon, Menu, Dropdown, Card } from 'antd';
 import ChartWidget from "../components/ChartWidget.js";
 import styled from "styled-components";
 import HighchartsReact from 'highcharts-react-official'
-import { DRUID_DATA_SOURCE, CHART_POLL_TIMER, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
+import { setDruidDataSourceForQuery, DRUID_DATA_SOURCE, CHART_POLL_TIMER, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
 import _ from "lodash";
 
 const ChartWrapperStyles = styled(Card)`
@@ -105,6 +105,7 @@ class IncomeTracker extends Component {
     }
   };
   componentDidMount() {
+    setDruidDataSourceForQuery(druidQueryParams);
     fetchPrograms().then(programs => {
       let monthlyBudget = _.sumBy(programs, function(program) { return program.target; })/12;
       this.setState({
