@@ -4,14 +4,14 @@ import ChartWidget from "../components/ChartWidget.js";
 import styled from "styled-components";
 import HighchartsReact from 'highcharts-react-official'
 import _ from "lodash";
-import { CHART_POLL_TIMER, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
+import { DRUID_DATA_SOURCE, CHART_POLL_TIMER, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
 const ChartWrapperStyles = styled(Card)`
   background: #fff;
 `;
 
 var druidQueryParams = {
     "queryType": "topN",
-    "dataSource": "transaction2",
+    "dataSource": DRUID_DATA_SOURCE,
     "aggregations": [
       {
         "type": "doubleSum",

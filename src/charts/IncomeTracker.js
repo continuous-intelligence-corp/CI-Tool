@@ -3,7 +3,7 @@ import { Row, Col, Icon, Menu, Dropdown, Card } from 'antd';
 import ChartWidget from "../components/ChartWidget.js";
 import styled from "styled-components";
 import HighchartsReact from 'highcharts-react-official'
-import { CHART_POLL_TIMER, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
+import { DRUID_DATA_SOURCE, CHART_POLL_TIMER, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
 import _ from "lodash";
 
 const ChartWrapperStyles = styled(Card)`
@@ -33,7 +33,7 @@ const ChartWrapperStyles = styled(Card)`
 //
 var druidQueryParams = {
   "queryType": "timeseries",
-  "dataSource": "transaction2",
+  "dataSource": DRUID_DATA_SOURCE,
   "aggregations": [
     {
       "type": "doubleSum",
@@ -132,8 +132,10 @@ class IncomeTracker extends Component {
       queryParams = druidQueryParams;
     }
     fetchDruidData(queryParams).then(data => {
+      console.log("data", data);
       let actualData = Array.from({length: 12}, () => 0);
       data.map(dataMonth => {
+        console.log("dataMonth", dataMonth);
         let date = new Date(dataMonth.timestamp);
         actualData[date.getUTCMonth()] = dataMonth.result.sum__TotalSpent;
       });

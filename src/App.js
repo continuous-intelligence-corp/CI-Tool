@@ -254,7 +254,7 @@ class App extends React.Component {
         <Content style={{ padding: '0 25px' }}>
           {switchRoutes}
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
+        <Footer style={{ textAlign: 'center', color: "white" }}>
           Continuous Intelligence ©2019
         </Footer>
       </Layout>
