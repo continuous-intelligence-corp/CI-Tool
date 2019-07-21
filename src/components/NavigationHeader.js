@@ -229,6 +229,7 @@ class NavigationHeader extends React.Component {
                 <Option value="30">30</Option>
                 <Option value="60">60</Option>
                 <Option value="600">600</Option>
+                <Option value="1000000">1000000</Option>
               </Select>
             )}
             <Tooltip title="Search">

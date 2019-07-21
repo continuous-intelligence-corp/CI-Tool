@@ -34,6 +34,13 @@ const routes = [
   },
   {
     path: "/charts",
+    subPath: "/transactionTracker",
+    name: "Transaction Tracker",
+    icon: "line-chart",
+    component: Charts,
+  },
+  {
+    path: "/charts",
     subPath: "/regionalbudget",
     name: "Regional Budget",
     icon: "global",

@@ -4,6 +4,7 @@ import ChartController from "../components/ChartController";
 import { fetchOffices, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
 import BudgetDrawdown from "../charts/BudgetDrawdown";
 import IncomeTracker from "../charts/IncomeTracker";
+import TransactionTracker from "../charts/TransactionTracker";
 import RegionalBudget from "../charts/RegionalBudget";
 import styled from "styled-components";
 
@@ -44,6 +45,8 @@ class Charts extends React.Component {
         return <BudgetDrawdown offices={offices} programs={programs} filters={filters} height={500} />;
       case "/charts/incometracker":
         return <IncomeTracker programs={programs} offices={offices} filters={filters} height={500} />;
+      case "/charts/transactionTracker":
+        return <TransactionTracker programs={programs} offices={offices} filters={filters} height={500} />;
       case "/charts/regionalbudget":
         return <RegionalBudget programs={programs} filters={filters} height={500} />;
       default:
@@ -54,8 +57,15 @@ class Charts extends React.Component {
   render() {
     const { offices, programs } = this.state;
     return (
-      <StyledCharts>
-        <Row gutter={24}>
+      <StyledCharts>  
+        {this.props.location.pathname === "/charts/transactionTracker" ? (
+          <Row gutter={24}>
+          <Col span={24}>
+            {this.renderChart()}
+          </Col>
+        </Row>
+        ) : (
+          <Row gutter={24}>
           <Col span={18}>
             {this.renderChart()}
           </Col>
@@ -68,6 +78,7 @@ class Charts extends React.Component {
             />
           </Col>
         </Row>
+        )}
       </StyledCharts>
     );
   }

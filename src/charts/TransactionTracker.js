@@ -33,24 +33,28 @@ const ChartWrapperStyles = styled(Card)`
 //
 var druidQueryParams = {
   "queryType": "timeseries",
-  "dataSource": DRUID_DATA_SOURCE,
+  "dataSource": "transaction2",
   "aggregations": [
     {
+      "fieldName": "TotalSpent",
+      "fieldNames": [
+        "TotalSpent"
+      ],
       "type": "doubleSum",
-      "name": "sum__TotalSpent",
-      "fieldName": "TotalSpent"
+      "name": "SUM(TotalSpent)"
     }
   ],
   "granularity": {
     "type": "period",
     "timeZone": "UTC",
-    "period": "P1M"
+    "origin": "2019-07-21T21:54:36",
+    "period": "PT5S"
   },
   "postAggregations": [],
-  "intervals": "1970-01-01T00:00:00+00:00/1970-12-31T00:00:00+00:00",
+  "intervals": "2019-07-20T23:55:00+00:00/2019-07-21T00:00:00+00:00"
 };
 
-class IncomeTracker extends Component {
+class TransactionTracker extends Component {
   state = {
     programs: [],
     chartOptions: {
@@ -59,26 +63,13 @@ class IncomeTracker extends Component {
         height: this.props.height || null,
       },
       title: {
-        text: 'Monthly Budget'
+        text: 'Transaction Tracker'
       },
       subtitle: {
-          text: ''
+          text: '(Last 5 mins)'
       },
       xAxis: {
-          categories: [
-              'Jan',
-              'Feb',
-              'Mar',
-              'Apr',
-              'May',
-              'Jun',
-              'Jul',
-              'Aug',
-              'Sep',
-              'Oct',
-              'Nov',
-              'Dec'
-          ],
+          categories: [],
           crosshair: true
       },
       yAxis: {
@@ -106,23 +97,13 @@ class IncomeTracker extends Component {
   };
   componentDidMount() {
     setDruidDataSourceForQuery(druidQueryParams);
-    fetchPrograms().then(programs => {
-      let monthlyBudget = _.sumBy(programs, function(program) { return program.target; })/12;
-      this.setState({
-        programs,
-        chartOptions: {
-          series: [{
-            name: "Budget",
-            data: Array.from({length: 12}, () => Math.round(monthlyBudget/1000)*1000),
-          }, {
-            name: "Actual",
-            data: [],
-          }]
-        }
-      }, () => {
-        this.fetchTransactionsByProgram();
-      })
-    })
+    this.fetchTransactionsByProgram();
+  }
+
+  setTimeIntervals = queryParams => {
+    let now = new Date();
+    let fiveMinsAgo = new Date(now.getTime() - 10*60000);
+    queryParams.intervals = `${fiveMinsAgo.toISOString()}/${now.toISOString()}`;
   }
   fetchTransactionsByProgram = () => {
     const { filters } = this.state;
@@ -132,21 +113,25 @@ class IncomeTracker extends Component {
     } else {
       queryParams = druidQueryParams;
     }
+    this.setTimeIntervals(queryParams);
     fetchDruidData(queryParams).then(data => {
-      console.log("data", data);
-      let actualData = Array.from({length: 12}, () => 0);
-      data.map(dataMonth => {
-        console.log("dataMonth", dataMonth);
-        let date = new Date(dataMonth.timestamp);
-        actualData[date.getUTCMonth()] = dataMonth.result.sum__TotalSpent;
+      let xAxis = [];
+      let yAxis = [];
+      data.map(dataEntry => {
+        let date = new Date(dataEntry.timestamp);
+        xAxis.push(date.toLocaleString());
+        yAxis.push(dataEntry.result["SUM(TotalSpent)"]);
       });
       this.setState({
         chartOptions: {
+          xAxis: {
+              categories: xAxis,
+              crosshair: true
+          },
           series: [
-            this.state.chartOptions.series[0],
             {
               name: "Actual",
-              data: actualData,
+              data: yAxis
             }
           ]
         }
@@ -245,4 +230,4 @@ class IncomeTracker extends Component {
   }
 }
 
-export default IncomeTracker;
+export default TransactionTracker;
