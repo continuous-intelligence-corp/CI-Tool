@@ -41,6 +41,13 @@ const routes = [
   },
   {
     path: "/charts",
+    subPath: "/regionalcomparison",
+    name: "Regional Comparison",
+    icon: "shop",
+    component: Charts,
+  },
+  {
+    path: "/charts",
     subPath: "/regionalbudget",
     name: "Regional Budget",
     icon: "global",

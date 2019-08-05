@@ -165,6 +165,51 @@ class ChartForm extends Component {
       </StyledChartControler>
     );
   }
+
+  renderOfficeComparisonOptions = () => {
+    const { form, offices, programs } = this.props;
+    const { getFieldDecorator } = form;
+    return (
+      <StyledChartControler onSubmit={this.handleSubmit} className="login-form">
+        <Form.Item label="Chart Type">
+          {getFieldDecorator('chartType', {
+            rules: [],
+          })(
+            <Select placeholder="Chart Type">
+              <Option value="bar">Bar</Option>
+              <Option value="column">Column</Option>
+              <Option value="line">Line</Option>
+            </Select>,
+          )}
+        </Form.Item>
+
+        <Form.Item label="Program">
+          {getFieldDecorator('programCode', {
+            rules: [],
+          })(
+            <Select placeholder="Program">
+            {programs && programs.map(program => (
+              <Option value={program.code}>{program.name}</Option>
+            ))}
+            </Select>,
+          )}
+        </Form.Item>
+
+        <Form.Item label="Transaction Type">
+          {getFieldDecorator('transactionType', {
+            rules: [],
+          })(
+            <Select placeholder="Transaction Type">
+              <Option value="sum">Sum of Transaction</Option>
+              <Option value="count">Number of Transactions</Option>
+            </Select>,
+          )}
+        </Form.Item>
+
+        {this.renderActions()}
+      </StyledChartControler>
+    );
+  }
   render() {
     const { chartRoute } = this.props;
 
@@ -173,6 +218,8 @@ class ChartForm extends Component {
         return this.renderBudgetDrawdownOptions();
       case "/charts/incometracker":
         return this.renderIncomeTrackerOptions();
+      case "/charts/regionalcomparison":
+        return this.renderOfficeComparisonOptions();
       case "/charts/regionalbudget":
         return this.renderRegionalBudgetOptions();
       default:

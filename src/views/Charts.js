@@ -5,6 +5,7 @@ import { fetchOffices, fetchPrograms, fetchDruidData } from "../services/ChartSe
 import BudgetDrawdown from "../charts/BudgetDrawdown";
 import IncomeTracker from "../charts/IncomeTracker";
 import TransactionTracker from "../charts/TransactionTracker";
+import OfficeComparison from "../charts/OfficeComparison";
 import RegionalBudget from "../charts/RegionalBudget";
 import styled from "styled-components";
 
@@ -45,6 +46,8 @@ class Charts extends React.Component {
         return <BudgetDrawdown offices={offices} programs={programs} filters={filters} height={500} />;
       case "/charts/incometracker":
         return <IncomeTracker programs={programs} offices={offices} filters={filters} height={500} />;
+      case "/charts/regionalcomparison":
+        return <OfficeComparison programs={programs} offices={offices} filters={filters} height={500} />;
       case "/charts/transactionTracker":
         return <TransactionTracker programs={programs} offices={offices} filters={filters} height={500} />;
       case "/charts/regionalbudget":
