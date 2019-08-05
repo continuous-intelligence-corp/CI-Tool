@@ -13,20 +13,6 @@ var H = Highcharts,
     chart;
 
 
-const SUM_TOTALSPENT = [
-  {
-    "type": "doubleSum",
-    "name": "sum__TotalSpent",
-    "fieldName": "TotalSpent"
-  }
-];
-
-const COUNT_TRANSACTION = [
-  {
-    "type": "count",
-    "name": "count"
-  }
-];
 
 const SUM_TOOLTIP = {
     pointFormat: '{point.name}<br>' +
@@ -41,17 +27,12 @@ const COUNT_TOOLTIP = {
 };
 
 var druidQueryParams = {
-    "queryType": "topN",
+    "queryType": "scan",
     "dataSource": DRUID_DATA_SOURCE,
-    "aggregations": SUM_TOTALSPENT,
-    "granularity": "all",
-    "postAggregations": [],
     "intervals": "2019-01-01T00:00:00+00:00/2019-12-31T00:00:00+00:00",
     "threshold": 10000,
-    "metric": "sum__TotalSpent",
-    "dimension": "office_id"
 };
-class GeoTransaction extends Component {
+class RegionalTransaction extends Component {
   state = {
     offices: [],
     chartOptions: {
@@ -115,32 +96,15 @@ class GeoTransaction extends Component {
     }
   }
 
+  setTimeIntervals = queryParams => {
+    let now = new Date();
+    let weekAgo = new Date(now.getTime() - 1000 * 60 * 60 * 24 * 7);
+    queryParams.intervals = `${weekAgo.toISOString()}/${now.toISOString()}`;
+  }
+
   componentDidMount() {
     setDruidDataSourceForQuery(druidQueryParams);
-    fetchOffices().then(offices => {
-      offices = offices.map(office => {
-        let budget = 0;
-
-        Object.keys(office).map(key => {
-          if (key.includes("028")) {
-            budget += office[key];
-          }
-        });
-        let actual = 0;
-        return {
-          ...office,
-          budget,
-          actual,
-          remain: budget-actual,
-          z: budget-actual,
-          lat: office.latitude,
-          lon: office.longitude
-        };
-      });
-      this.setState({
-        offices,
-      }, this.fetchTransactionsByOffice());
-    });
+    this.fetchTransactionsByOffice()
   }
 
   fetchTransactionsByOffice = () => {
@@ -152,14 +116,10 @@ class GeoTransaction extends Component {
       queryParams = druidQueryParams;
     }
 
-    if (transactionType === "count") {
-      queryParams.aggregations = COUNT_TRANSACTION;
-      queryParams.metric = "count";
-    } else {
-      queryParams.aggregations = SUM_TOTALSPENT;
-      queryParams.metric = "sum__TotalSpent";
-    }
+    this.setTimeIntervals(queryParams);
+
     fetchDruidData(queryParams).then(data => {
+      console.log("!---------- DRUID DATA --------!", data);
       // let computedResults = [];//sum__TotalSpent
       let offices = this.state.offices;
       let druidData = data[0].result;
@@ -202,8 +162,8 @@ class GeoTransaction extends Component {
       let chartName = "";
       let filters = {};
       let filterProgram = null;
-
-      const { transactionType } = this.props.filters;
+      let filterOffice = null;
+      const { transactionType, programCode, officeId } = this.props.filters;
       let transactionTitle = transactionType === "count" ? "Transactions" : "Budget";
       let yAxisType = transactionType === "count" ? "Transactions" : "USD";
       if (this.props.filters.programCode) {
@@ -222,6 +182,37 @@ class GeoTransaction extends Component {
         };
       } else {
         chartName = `Regional ${transactionTitle} By Office`;
+      }
+      if (officeId) {
+        this.props.offices.map(office => {
+          if (office.id === officeId) {
+            chartName += `${office.name}`;
+            filterOffice = office;
+          }
+        });
+        if (filters.filter) {
+          filters.filter = {
+            type: "and",
+            fields: [
+              {
+                type: "selector",
+                dimension: "program_code",
+                value: `${filterProgram.code}`
+              },
+              {
+                type: "selector",
+                dimension: "office_id",
+                value: `${filterOffice.id}`
+              }
+            ],
+          }
+        } else {
+          filters.filter = {
+            type: "selector",
+            dimension: "office_id",
+            value: `${filterOffice.id}`
+          };
+        }
       }
       this.setState({
         transactionType,
@@ -251,4 +242,4 @@ class GeoTransaction extends Component {
   }
 }
 
-export default GeoTransaction;
+export default RegionalTransaction;

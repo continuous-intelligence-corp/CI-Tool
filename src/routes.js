@@ -48,14 +48,21 @@ const routes = [
   },
   {
     path: "/charts",
+    subPath: "/regionaltransaction",
+    name: "Regional Transactions",
+    icon: "transaction",
+    component: Charts,
+  },
+  {
+    path: "/charts",
     subPath: "/regionalbudget",
     name: "Regional Budget",
     icon: "global",
     component: Charts,
   },
   {
-    path: "/pipelines",
-    name: "Pipelines",
+    path: "/settings",
+    name: "settings",
     icon: "sliders",
     component: Pipelines,
   }

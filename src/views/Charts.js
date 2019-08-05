@@ -7,6 +7,7 @@ import IncomeTracker from "../charts/IncomeTracker";
 import TransactionTracker from "../charts/TransactionTracker";
 import OfficeComparison from "../charts/OfficeComparison";
 import RegionalBudget from "../charts/RegionalBudget";
+import RegionalTransaction from "../charts/RegionalTransaction";
 import styled from "styled-components";
 
 const StyledCharts = styled.div`
@@ -52,6 +53,8 @@ class Charts extends React.Component {
         return <TransactionTracker programs={programs} offices={offices} filters={filters} height={500} />;
       case "/charts/regionalbudget":
         return <RegionalBudget programs={programs} filters={filters} height={500} />;
+      case "/charts/regionaltransaction":
+        return <RegionalTransaction programs={programs} offices={offices} filters={filters} height={500} />;
       default:
         return null;
     }

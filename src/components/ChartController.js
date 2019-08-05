@@ -210,6 +210,64 @@ class ChartForm extends Component {
       </StyledChartControler>
     );
   }
+
+  renderRegionalTransactionOptions = () => {
+    const { form, offices, programs } = this.props;
+    const { getFieldDecorator } = form;
+    return (
+      <StyledChartControler onSubmit={this.handleSubmit} className="login-form">
+        <Form.Item label="Chart Type">
+          {getFieldDecorator('chartType', {
+            rules: [],
+          })(
+            <Select placeholder="Chart Type">
+              <Option value="area">Area</Option>
+              <Option value="bar">Bar</Option>
+              <Option value="column">Column</Option>
+              <Option value="line">Line</Option>
+            </Select>,
+          )}
+        </Form.Item>
+
+        <Form.Item label="Program">
+          {getFieldDecorator('programCode', {
+            rules: [],
+          })(
+            <Select placeholder="Program">
+            {programs && programs.map(program => (
+              <Option value={program.code}>{program.name}</Option>
+            ))}
+            </Select>,
+          )}
+        </Form.Item>
+
+        <Form.Item label="Office">
+          {getFieldDecorator('officeId', {
+            rules: [],
+          })(
+            <Select placeholder="Office">
+              {offices && offices.map(office => (
+                <Option value={office.id}>{office.name}</Option>
+              ))}
+            </Select>,
+          )}
+        </Form.Item>
+
+        <Form.Item label="Display Value">
+          {getFieldDecorator('displayValue', {
+            rules: [],
+          })(
+            <Select placeholder="Display Value">
+              <Option value="commitment">Commitment</Option>
+              <Option value="jobs">Number of Jobs Created</Option>
+            </Select>,
+          )}
+        </Form.Item>
+
+        {this.renderActions()}
+      </StyledChartControler>
+    );
+  }
   render() {
     const { chartRoute } = this.props;
 
@@ -222,6 +280,8 @@ class ChartForm extends Component {
         return this.renderOfficeComparisonOptions();
       case "/charts/regionalbudget":
         return this.renderRegionalBudgetOptions();
+      case "/charts/regionaltransaction":
+        return this.renderRegionalTransactionOptions();
       default:
         return null;
     }

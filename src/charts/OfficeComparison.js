@@ -129,13 +129,7 @@ class OfficeComparison extends Component {
   };
   componentDidMount() {
     setDruidDataSourceForQuery(druidQueryParams);
-    fetchPrograms().then(programs => {
-      this.setState({
-        programs,
-      }, () => {
-        this.fetchTransactionsByProgram();
-      });
-    });
+    this.fetchTransactionsByProgram();
   }
   fetchTransactionsByProgram = () => {
     let resultProperty = "sum__TotalSpent";

@@ -55,7 +55,7 @@ export function fetchDruidData(params){
   });
 }
 
-export function fetchProperty(){
+export function fetchProperties(){
   return new Promise((resolve, reject) => {
     fetch(`${CI_BACKEND_URL}/property`)
     .then(function(response) {
@@ -70,17 +70,31 @@ export function fetchProperty(){
   });
 }
 
-export function setProperty(value){
+export function setProperty(keyValuePair){
   return new Promise((resolve, reject) => {
+    let updateKey = "";
+    let updateValue = "";
+    if (keyValuePair && keyValuePair.hasOwnProperty("dataGenInterval")) {
+      updateKey = "datagen_interval";
+      updateValue = keyValuePair.dataGenInterval;
+    } else if (keyValuePair && keyValuePair.hasOwnProperty("avgTransactionAmt")) {
+      updateKey = "avg_award";
+      updateValue = keyValuePair.avgTransactionAmt;
+    } else {
+      reject("ERROR FAILED TO FIND PROPERTY IN ", keyValuePair);
+      return null;
+    }
     fetch(`${CI_BACKEND_URL}/property`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ key: value }),
+      body: JSON.stringify({ [updateKey]: updateValue }),
     })
     .then(function(response) {
-      CHART_POLL_TIMER = value * 1000;
+      if (keyValuePair && keyValuePair.hasOwnProperty("dataGenInterval")) {
+        CHART_POLL_TIMER = keyValuePair.dataGenInterval * 1000;
+      }
       return response.json();
     })
     .then(function(property) {

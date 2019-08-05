@@ -4,6 +4,8 @@ import { withRouter } from "react-router";
 import { Icon, Layout, Menu, Breadcrumb } from 'antd';
 import HeaderTitle from "./components/HeaderTitle";
 import NavigationHeader from "./components/NavigationHeader";
+import { fetchProperties } from "./services/ChartService.js";
+
 const { Header, Content, Footer } = Layout;
 import routes from "routes.js";
 import "./globalStyles.css";
@@ -245,6 +247,10 @@ class App extends React.Component {
 
   handleOnCollapse = () => {
     this.setState({ collapsed: !this.state.collapsed });
+  }
+
+  componentDidMount() {
+    fetchProperties();
   }
 
   render() {
