@@ -25,7 +25,7 @@ class Dashboard extends Component {
   render() {
     return (
       <StyledDashboard>
-        <Row>
+        <Row gutter={24}>
           <Col span={16}>
             <Link to={"/charts/budgetdrawdown"}>
               <BudgetDrawdown />
@@ -35,7 +35,7 @@ class Dashboard extends Component {
             <DisasterLoanBudgetPie />
           </Col>
         </Row>
-        <Row>
+        <Row gutter={24}>
           <Col span={8}>
             <Link to={"/charts/regionalbudget"}>
               <RegionalBudget />

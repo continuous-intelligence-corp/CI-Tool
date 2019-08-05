@@ -8,11 +8,11 @@ const StyledChartControler = styled(Form)`
   padding: 25px !important;
   height: 550px;
   border: 1px solid rgb(232, 232, 232);
-  .ant-form-item-label {
+  /* .ant-form-item-label {
     label {
       color: #E0E0E3;
     }
-  }
+  } */
 `;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -92,6 +92,17 @@ class ChartForm extends Component {
           )}
         </Form.Item>
 
+        <Form.Item label="Transaction Type">
+          {getFieldDecorator('transactionType', {
+            rules: [],
+          })(
+            <Select placeholder="Transaction Type">
+              <Option value="sum">Sum of Transaction</Option>
+              <Option value="count">Number of Transactions</Option>
+            </Select>,
+          )}
+        </Form.Item>
+
         {this.renderActions()}
       </StyledChartControler>
     );
@@ -135,6 +146,17 @@ class ChartForm extends Component {
               {offices && offices.map(office => (
                 <Option value={office.id}>{office.name}</Option>
               ))}
+            </Select>,
+          )}
+        </Form.Item>
+
+        <Form.Item label="Transaction Type">
+          {getFieldDecorator('transactionType', {
+            rules: [],
+          })(
+            <Select placeholder="Transaction Type">
+              <Option value="sum">Sum of Transaction</Option>
+              <Option value="count">Number of Transactions</Option>
             </Select>,
           )}
         </Form.Item>

@@ -223,13 +223,12 @@ class NavigationHeader extends React.Component {
             )}
             {curRoute === "/pipelines" && (
               <Select value={dataGenInterval} style={{ width: 120 }} onChange={this.updateDataGenValue}>
+                <Option value="0">0</Option>
                 <Option value="1">1</Option>
                 <Option value="5">5</Option>
                 <Option value="10">10</Option>
                 <Option value="30">30</Option>
                 <Option value="60">60</Option>
-                <Option value="600">600</Option>
-                <Option value="1000000">1000000</Option>
               </Select>
             )}
             <Tooltip title="Search">

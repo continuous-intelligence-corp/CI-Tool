@@ -12,16 +12,38 @@ var H = Highcharts,
     map = Highcharts.maps['countries/us/us-all'],
     chart;
 
+
+const SUM_TOTALSPENT = [
+  {
+    "type": "doubleSum",
+    "name": "sum__TotalSpent",
+    "fieldName": "TotalSpent"
+  }
+];
+
+const COUNT_TRANSACTION = [
+  {
+    "type": "count",
+    "name": "count"
+  }
+];
+
+const SUM_TOOLTIP = {
+    pointFormat: '{point.name}<br>' +
+        'Total Budget: {point.budget}<br>' +
+        'Total Spent: {point.actual}<br>' +
+        'Budget Remaining: {point.remain}'
+};
+
+const COUNT_TOOLTIP = {
+    pointFormat: '{point.name}<br>' +
+        'Transactions: {point.count:.0f}<br>'
+};
+
 var druidQueryParams = {
     "queryType": "topN",
     "dataSource": DRUID_DATA_SOURCE,
-    "aggregations": [
-      {
-        "type": "doubleSum",
-        "name": "sum__TotalSpent",
-        "fieldName": "TotalSpent"
-      }
-    ],
+    "aggregations": SUM_TOTALSPENT,
     "granularity": "all",
     "postAggregations": [],
     "intervals": "2019-01-01T00:00:00+00:00/2019-12-31T00:00:00+00:00",
@@ -42,12 +64,7 @@ class RegionalBudget extends Component {
           text: 'Regional Budget By Office'
       },
 
-      tooltip: {
-          pointFormat: '{point.name}<br>' +
-              'Total Budget: {point.budget}<br>' +
-              'Total Spent: {point.actual}<br>' +
-              'Budget Remaining: {point.remain}'
-      },
+      tooltip: SUM_TOOLTIP,
 
       mapNavigation: {
                     enabled: true
@@ -127,24 +144,41 @@ class RegionalBudget extends Component {
   }
 
   fetchTransactionsByOffice = () => {
-    const { filters } = this.state;
+    const { filters, transactionType } = this.state;
     let queryParams;
     if (filters) {
       queryParams = { ...druidQueryParams, ...filters };
     } else {
       queryParams = druidQueryParams;
     }
+
+    if (transactionType === "count") {
+      queryParams.aggregations = COUNT_TRANSACTION;
+      queryParams.metric = "count";
+    } else {
+      queryParams.aggregations = SUM_TOTALSPENT;
+      queryParams.metric = "sum__TotalSpent";
+    }
     fetchDruidData(queryParams).then(data => {
       // let computedResults = [];//sum__TotalSpent
       let offices = this.state.offices;
       let druidData = data[0].result;
-      druidData.map(druidOfficeData => {
-        let officeId = druidOfficeData["office_id"];
-        offices.map(chartOfficeData => {
+      offices.map(chartOfficeData => {
+        chartOfficeData.count = 0;
+        chartOfficeData.z = 0;
+        chartOfficeData.actual = 0;
+        chartOfficeData.remain = 0;
+        druidData.map(druidOfficeData => {
+          let officeId = druidOfficeData["office_id"];
           if (chartOfficeData.id === officeId) {
-            chartOfficeData.actual = druidOfficeData["sum__TotalSpent"];
-            chartOfficeData.remain = chartOfficeData.budget - chartOfficeData.actual;
-            chartOfficeData.z = chartOfficeData.remain;
+            if (transactionType === "count") {
+              chartOfficeData.count = druidOfficeData["count"];
+              chartOfficeData.z = chartOfficeData.count;
+            } else {
+              chartOfficeData.actual = druidOfficeData["sum__TotalSpent"];
+              chartOfficeData.remain = chartOfficeData.budget - chartOfficeData.actual;
+              chartOfficeData.z = chartOfficeData.remain;
+            }
           }
         });
       });
@@ -168,10 +202,14 @@ class RegionalBudget extends Component {
       let chartName = "";
       let filters = {};
       let filterProgram = null;
+
+      const { transactionType } = this.props.filters;
+      let transactionTitle = transactionType === "count" ? "Transactions" : "Budget";
+      let yAxisType = transactionType === "count" ? "Transactions" : "USD";
       if (this.props.filters.programCode) {
         this.props.programs.map(program => {
           if (program.code === this.props.filters.programCode) {
-            chartName = `${program.name} Budget By Office`;
+            chartName = `${program.name} ${transactionTitle} By Office`;
             filterProgram = program;
           }
         });
@@ -183,15 +221,16 @@ class RegionalBudget extends Component {
           }
         };
       } else {
-        chartName = "Regional Budget By Office"
+        chartName = `Regional ${transactionTitle} By Office`;
       }
       this.setState({
+        transactionType,
         filters,
         chartOptions: {
           ...this.state.chartOptions,
           title: { text: chartName },
-
-        }
+          tooltip: transactionType === "count" ? COUNT_TOOLTIP : SUM_TOOLTIP,
+        },
       }, () => {
         this.fetchTransactionsByOffice();
       });

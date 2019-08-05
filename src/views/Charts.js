@@ -14,7 +14,7 @@ const StyledCharts = styled.div`
   }
 
   .ant-card-body {
-    background: #353537;
+    /* background: #353537; */
   }
 `;
 class Charts extends React.Component {
@@ -57,7 +57,7 @@ class Charts extends React.Component {
   render() {
     const { offices, programs } = this.state;
     return (
-      <StyledCharts>  
+      <StyledCharts>
         {this.props.location.pathname === "/charts/transactionTracker" ? (
           <Row gutter={24}>
           <Col span={24}>

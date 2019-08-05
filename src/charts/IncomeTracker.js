@@ -31,16 +31,43 @@ const ChartWrapperStyles = styled(Card)`
 //   dimension: "date"
 // }
 //
+
+const SUM_TOTALSPENT = [
+  {
+    "type": "doubleSum",
+    "name": "sum__TotalSpent",
+    "fieldName": "TotalSpent"
+  }
+];
+
+const COUNT_TRANSACTION = [
+  {
+    "type": "count",
+    "name": "count"
+  }
+];
+
+const SUM_TOOLTIP = {
+    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.1f} USD</b></td></tr>',
+    footerFormat: '</table>',
+    shared: true,
+    useHTML: true
+};
+
+const COUNT_TOOLTIP = {
+    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.0f} Transactions</b></td></tr>',
+    footerFormat: '</table>',
+    shared: true,
+    useHTML: true
+}
 var druidQueryParams = {
   "queryType": "timeseries",
   "dataSource": DRUID_DATA_SOURCE,
-  "aggregations": [
-    {
-      "type": "doubleSum",
-      "name": "sum__TotalSpent",
-      "fieldName": "TotalSpent"
-    }
-  ],
+  "aggregations": SUM_TOTALSPENT,
   "granularity": {
     "type": "period",
     "timeZone": "UTC",
@@ -87,14 +114,7 @@ class IncomeTracker extends Component {
               text: 'USD'
           }
       },
-      tooltip: {
-          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-              '<td style="padding:0"><b>{point.y:.1f} USD</b></td></tr>',
-          footerFormat: '</table>',
-          shared: true,
-          useHTML: true
-      },
+      tooltip: SUM_TOOLTIP,
       plotOptions: {
           column: {
               pointPadding: 0.2,
@@ -108,12 +128,14 @@ class IncomeTracker extends Component {
     setDruidDataSourceForQuery(druidQueryParams);
     fetchPrograms().then(programs => {
       let monthlyBudget = _.sumBy(programs, function(program) { return program.target; })/12;
+      let monthlyBudgetArray = Array.from({length: 12}, () => Math.round(monthlyBudget/1000)*1000);
       this.setState({
+        monthlyBudgetArray,
         programs,
         chartOptions: {
           series: [{
             name: "Budget",
-            data: Array.from({length: 12}, () => Math.round(monthlyBudget/1000)*1000),
+            data: monthlyBudgetArray,
           }, {
             name: "Actual",
             data: [],
@@ -125,25 +147,34 @@ class IncomeTracker extends Component {
     })
   }
   fetchTransactionsByProgram = () => {
-    const { filters } = this.state;
+    let resultProperty = "sum__TotalSpent";
+    const { filters, transactionType } = this.state;
     let queryParams;
     if (filters) {
       queryParams = { ...druidQueryParams, ...filters };
     } else {
       queryParams = druidQueryParams;
     }
+
+    if (transactionType === "count") {
+      queryParams.aggregations = COUNT_TRANSACTION;
+      resultProperty = "count";
+    } else {
+      queryParams.aggregations = SUM_TOTALSPENT;
+    }
     fetchDruidData(queryParams).then(data => {
-      console.log("data", data);
       let actualData = Array.from({length: 12}, () => 0);
       data.map(dataMonth => {
-        console.log("dataMonth", dataMonth);
         let date = new Date(dataMonth.timestamp);
-        actualData[date.getUTCMonth()] = dataMonth.result.sum__TotalSpent;
+        actualData[date.getUTCMonth()] = dataMonth.result[resultProperty];
       });
       this.setState({
         chartOptions: {
           series: [
-            this.state.chartOptions.series[0],
+            {
+              name: "Budget",
+              data: transactionType === "count" ? [] : this.state.monthlyBudgetArray,
+            },
             {
               name: "Actual",
               data: actualData,
@@ -164,12 +195,15 @@ class IncomeTracker extends Component {
       let filters = {};
       let filterProgram = null;
       let filterOffice = null;
-      const { officeId, programCode, chartType } = this.props.filters;
+      const { officeId, programCode, chartType, transactionType } = this.props.filters;
+
+      let transactionTitle = transactionType === "count" ? "Transactions" : "Budget";
+      let yAxisType = transactionType === "count" ? "Transactions" : "USD";
       if (officeId || programCode) {
         if (programCode) {
           this.props.programs.map(program => {
             if (program.code === programCode) {
-              chartName = `${program.name} Monthly Budget`;
+              chartName = `${program.name} Monthly ${transactionTitle}`;
               filterProgram = program;
             }
           });
@@ -187,7 +221,7 @@ class IncomeTracker extends Component {
               if (chartName) {
                 chartName += ` For ${office.name}`;
               } else {
-                chartName = `Monthly Budget For ${office.name}`;
+                chartName = `Monthly ${transactionTitle} For ${office.name}`;
               }
               filterOffice = office;
             }
@@ -214,9 +248,10 @@ class IncomeTracker extends Component {
           }
         }
       } else {
-        chartName = "Monthly Budget";
+        chartName = `Monthly ${transactionTitle}`;
       }
       this.setState({
+        transactionType,
         filters,
         chartOptions: {
           ...this.state.chartOptions,
@@ -225,6 +260,13 @@ class IncomeTracker extends Component {
             type: chartType || 'column',
             height: this.props.height || null,
           },
+          yAxis: {
+              min: 0,
+              title: {
+                  text: yAxisType,
+              }
+          },
+          tooltip: transactionType === "count" ? COUNT_TOOLTIP : SUM_TOOLTIP,
         }
       }, () => {
         this.fetchTransactionsByProgram();

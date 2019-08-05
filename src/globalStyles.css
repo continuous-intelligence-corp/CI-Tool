@@ -113,16 +113,16 @@ Highcharts.theme = {
 
 
 .ant-card,  .ant-body {
-  background: #444E58;
+  /* background: #444E58; */
   border: none;
 }
 
 .ant-layout-header, .ant-menu, .ant-form {
-  background: #353537;
+  /* background: #353537; */
   border: none;
 }
 .ant-layout-content, .ant-layout-footer {
-  background: #444E58;
+  /* background: #444E58; */
 }
 
 
