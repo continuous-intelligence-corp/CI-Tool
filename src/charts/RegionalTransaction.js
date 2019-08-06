@@ -16,9 +16,9 @@ var H = Highcharts,
 
 const SUM_TOOLTIP = {
     pointFormat: '{point.name}<br>' +
-        'Total Budget: {point.budget}<br>' +
-        'Total Spent: {point.actual}<br>' +
-        'Budget Remaining: {point.remain}'
+        'Total Commitment: {point.TotalSpent}<br>' +
+        'Jobs Created: {point.jobsno}<br>' +
+        'Risk Review: {point.riskreview}'
 };
 
 const COUNT_TOOLTIP = {
@@ -42,7 +42,11 @@ class RegionalTransaction extends Component {
       },
 
       title: {
-          text: 'Regional Budget By Office'
+          text: 'Regional Transactions By Office'
+      },
+
+      subtitle: {
+        text: "Commitment"
       },
 
       tooltip: SUM_TOOLTIP,
@@ -88,10 +92,21 @@ class RegionalTransaction extends Component {
               enabled: true,
               format: '{point.name}'
           },
-          name: 'Offices',
+          name: 'Transactions',
           data: [],
-          maxSize: '20%',
+          maxSize: '5%',
           color: H.getOptions().colors[5]
+      },
+      {
+          type: 'mapbubble',
+          dataLabels: {
+              enabled: true,
+              format: '{point.name}'
+          },
+          name: 'Risk Reviewed Transactions',
+          data: [],
+          maxSize: '5%',
+          color: H.getOptions().colors[3]
       }]
     }
   }
@@ -108,7 +123,7 @@ class RegionalTransaction extends Component {
   }
 
   fetchTransactionsByOffice = () => {
-    const { filters, transactionType } = this.state;
+    const { filters, displayValue } = this.state;
     let queryParams;
     if (filters) {
       queryParams = { ...druidQueryParams, ...filters };
@@ -119,33 +134,37 @@ class RegionalTransaction extends Component {
     this.setTimeIntervals(queryParams);
 
     fetchDruidData(queryParams).then(data => {
-      console.log("!---------- DRUID DATA --------!", data);
       // let computedResults = [];//sum__TotalSpent
-      let offices = this.state.offices;
-      let druidData = data[0].result;
-      offices.map(chartOfficeData => {
-        chartOfficeData.count = 0;
-        chartOfficeData.z = 0;
-        chartOfficeData.actual = 0;
-        chartOfficeData.remain = 0;
-        druidData.map(druidOfficeData => {
-          let officeId = druidOfficeData["office_id"];
-          if (chartOfficeData.id === officeId) {
-            if (transactionType === "count") {
-              chartOfficeData.count = druidOfficeData["count"];
-              chartOfficeData.z = chartOfficeData.count;
-            } else {
-              chartOfficeData.actual = druidOfficeData["sum__TotalSpent"];
-              chartOfficeData.remain = chartOfficeData.budget - chartOfficeData.actual;
-              chartOfficeData.z = chartOfficeData.remain;
-            }
+      let regularResults = [];
+      let riskyResults = [];
+      if (data && data.length > 0) {
+        data.map(druidRow => {
+          if (druidRow.events && druidRow.events.length > 0) {
+            druidRow.events.map(transactionEvent => {
+              if (transactionEvent.lat && transactionEvent.long) {
+                if (transactionEvent.riskreview === "1") {
+                  riskyResults.push({
+                    z: displayValue === "jobs" ? parseInt(transactionEvent.jobsno) :transactionEvent.TotalSpent,
+                    lon: transactionEvent.long,
+                    ...transactionEvent
+                  });
+                } else {
+                  regularResults.push({
+                    z: displayValue === "jobs" ? parseInt(transactionEvent.jobsno) :transactionEvent.TotalSpent,
+                    lon: transactionEvent.long,
+                    ...transactionEvent
+                  });
+                }
+
+              }
+            });
           }
-        });
-      });
+        })
+      }
       let series = this.state.chartOptions.series;
-      series[2].data = offices;
+      series[2].data = regularResults;
+      series[3].data = riskyResults;
       this.setState({
-        offices,
         chartOptions: {
           series
         }
@@ -163,9 +182,8 @@ class RegionalTransaction extends Component {
       let filters = {};
       let filterProgram = null;
       let filterOffice = null;
-      const { transactionType, programCode, officeId } = this.props.filters;
-      let transactionTitle = transactionType === "count" ? "Transactions" : "Budget";
-      let yAxisType = transactionType === "count" ? "Transactions" : "USD";
+      const { programCode, officeId, displayValue } = this.props.filters;
+      let transactionTitle = "Transactions";
       if (this.props.filters.programCode) {
         this.props.programs.map(program => {
           if (program.code === this.props.filters.programCode) {
@@ -186,7 +204,7 @@ class RegionalTransaction extends Component {
       if (officeId) {
         this.props.offices.map(office => {
           if (office.id === officeId) {
-            chartName += `${office.name}`;
+            chartName += ` ${office.name}`;
             filterOffice = office;
           }
         });
@@ -215,12 +233,12 @@ class RegionalTransaction extends Component {
         }
       }
       this.setState({
-        transactionType,
+        displayValue,
         filters,
         chartOptions: {
           ...this.state.chartOptions,
           title: { text: chartName },
-          tooltip: transactionType === "count" ? COUNT_TOOLTIP : SUM_TOOLTIP,
+          subtitle: { text: displayValue === "jobs" ? "Number of Jobs Created" : "Commitment" },
         },
       }, () => {
         this.fetchTransactionsByOffice();

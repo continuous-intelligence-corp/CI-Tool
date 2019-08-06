@@ -216,18 +216,6 @@ class ChartForm extends Component {
     const { getFieldDecorator } = form;
     return (
       <StyledChartControler onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item label="Chart Type">
-          {getFieldDecorator('chartType', {
-            rules: [],
-          })(
-            <Select placeholder="Chart Type">
-              <Option value="area">Area</Option>
-              <Option value="bar">Bar</Option>
-              <Option value="column">Column</Option>
-              <Option value="line">Line</Option>
-            </Select>,
-          )}
-        </Form.Item>
 
         <Form.Item label="Program">
           {getFieldDecorator('programCode', {
