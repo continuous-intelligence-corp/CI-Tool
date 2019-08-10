@@ -45,19 +45,19 @@ class Charts extends React.Component {
     let url = this.props.location.pathname;
     switch (url) {
       case "/charts/budgetdrawdown":
-        return <BudgetDrawdown offices={offices} programs={programs} filters={filters} height={500} />;
+        return <BudgetDrawdown offices={offices} programs={programs} filters={filters} height={"59%"} />;
       case "/charts/incometracker":
-        return <IncomeTracker programs={programs} offices={offices} filters={filters} height={500} />;
+        return <IncomeTracker programs={programs} offices={offices} filters={filters} height={"59%"} />;
       case "/charts/regionalcomparison":
-        return <OfficeComparison programs={programs} offices={offices} filters={filters} height={500} />;
+        return <OfficeComparison programs={programs} offices={offices} filters={filters} height={"59%"} />;
       case "/charts/transactionTracker":
-        return <TransactionTracker programs={programs} offices={offices} filters={filters} height={500} />;
+        return <TransactionTracker programs={programs} offices={offices} filters={filters} height={"59%"} />;
       case "/charts/regionalbudget":
-        return <RegionalBudget programs={programs} filters={filters} height={500} />;
+        return <RegionalBudget programs={programs} filters={filters} height={"59%"} />;
       case "/charts/regionaltransaction":
-        return <RegionalTransaction programs={programs} offices={offices} filters={filters} height={500} />;
+        return <RegionalTransaction programs={programs} offices={offices} filters={filters} height={"59%"} />;
       case "/charts/transactiontable":
-        return <TransactionTable programs={programs} offices={offices} filters={filters} height={500} />;
+        return <TransactionTable programs={programs} offices={offices} filters={filters} height={"59%"} />;
       default:
         return null;
     }

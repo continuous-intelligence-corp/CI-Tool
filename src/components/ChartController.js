@@ -6,7 +6,7 @@ import moment from "moment";
 const StyledChartControler = styled(Form)`
   background: white;
   padding: 25px !important;
-  height: 550px;
+  height: 90vh;
   border: 1px solid rgb(232, 232, 232);
   /* .ant-form-item-label {
     label {

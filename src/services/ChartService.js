@@ -63,7 +63,7 @@ export function fetchProperties(){
     })
     .then(function(property) {
       if (property && property[0] && property[0].value) {
-        CHART_POLL_TIMER = property[0].value * 1000;
+        CHART_POLL_TIMER = property[0].value * 1000 || 10000;
       }
       resolve(property);
     });
