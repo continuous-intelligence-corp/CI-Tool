@@ -48,7 +48,6 @@ const StyledCard = styled(Card)`
 var druidQueryParams = {
     "queryType": "scan",
     "dataSource": DRUID_DATA_SOURCE,
-    "intervals": "2019-01-01T00:00:00+00:00/2019-12-31T00:00:00+00:00",
     "threshold": 10000,
 };
 class TransactionTable extends React.Component {
@@ -69,6 +68,74 @@ class TransactionTable extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.offices !== prevProps.offices || this.props.programs !== prevProps.programs) {
       this.setDataMaps();
+    }
+
+    if (this.props.filters !== prevProps.filters) {
+      let chartName = "";
+      let filters = {};
+      let filterProgram = null;
+      let filterOffice = null;
+      const { programCode, officeId, timeRange } = this.props.filters;
+      let transactionTitle = "Transactions";
+      if (this.props.filters.programCode) {
+        this.props.programs.map(program => {
+          if (program.code === this.props.filters.programCode) {
+            chartName = `${program.name} ${transactionTitle} By Office`;
+            filterProgram = program;
+          }
+        });
+        filters = {
+          filter: {
+            type: "selector",
+            dimension: "program_code",
+            value: `${filterProgram.code}`
+          }
+        };
+      } else {
+        chartName = `Regional ${transactionTitle} By Office`;
+      }
+      if (officeId) {
+        this.props.offices.map(office => {
+          if (office.id === officeId) {
+            chartName += ` ${office.name}`;
+            filterOffice = office;
+          }
+        });
+        if (filters.filter) {
+          filters.filter = {
+            type: "and",
+            fields: [
+              {
+                type: "selector",
+                dimension: "program_code",
+                value: `${filterProgram.code}`
+              },
+              {
+                type: "selector",
+                dimension: "office_id",
+                value: `${filterOffice.id}`
+              }
+            ],
+          }
+        } else {
+          filters.filter = {
+            type: "selector",
+            dimension: "office_id",
+            value: `${filterOffice.id}`
+          };
+        }
+      }
+
+      if (timeRange) {
+        filters.intervals = `${timeRange[0].format()}/${timeRange[1].format()}`;
+      } else {
+        filters.intervals = null;
+      }
+      this.setState({
+        filters,
+      }, () => {
+        this.fetchTransactions();
+      });
     }
   }
 
@@ -120,7 +187,10 @@ class TransactionTable extends React.Component {
     } else {
       queryParams = druidQueryParams;
     }
-    this.setTimeIntervals(queryParams);
+    if (!queryParams.intervals) {
+      this.setTimeIntervals(queryParams);
+    }
+    console.log("queryParams", queryParams);
     fetchDruidData(queryParams).then(druidData => {
       let data = this.processDruidResults(druidData);
       this.setState({ data });

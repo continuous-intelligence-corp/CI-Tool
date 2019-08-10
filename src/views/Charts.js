@@ -42,7 +42,6 @@ class Charts extends React.Component {
 
   renderChart() {
     const { filters, offices, programs } = this.state;
-    console.log("filters", filters);
     let url = this.props.location.pathname;
     switch (url) {
       case "/charts/budgetdrawdown":

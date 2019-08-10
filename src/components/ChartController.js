@@ -288,7 +288,7 @@ class ChartForm extends Component {
         </Form.Item>
 
         <Form.Item label="RangePicker">
-          {getFieldDecorator('range-picker', { rules: []})(<RangePicker />)}
+          {getFieldDecorator('timeRange', { rules: []})(<RangePicker />)}
         </Form.Item>
 
         {this.renderActions()}
