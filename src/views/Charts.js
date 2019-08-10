@@ -8,6 +8,7 @@ import TransactionTracker from "../charts/TransactionTracker";
 import OfficeComparison from "../charts/OfficeComparison";
 import RegionalBudget from "../charts/RegionalBudget";
 import RegionalTransaction from "../charts/RegionalTransaction";
+import TransactionTable from "./TransactionTable";
 import styled from "styled-components";
 
 const StyledCharts = styled.div`
@@ -41,6 +42,7 @@ class Charts extends React.Component {
 
   renderChart() {
     const { filters, offices, programs } = this.state;
+    console.log("filters", filters);
     let url = this.props.location.pathname;
     switch (url) {
       case "/charts/budgetdrawdown":
@@ -55,6 +57,8 @@ class Charts extends React.Component {
         return <RegionalBudget programs={programs} filters={filters} height={500} />;
       case "/charts/regionaltransaction":
         return <RegionalTransaction programs={programs} offices={offices} filters={filters} height={500} />;
+      case "/charts/transactiontable":
+        return <TransactionTable programs={programs} offices={offices} filters={filters} height={500} />;
       default:
         return null;
     }

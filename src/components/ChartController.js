@@ -256,6 +256,45 @@ class ChartForm extends Component {
       </StyledChartControler>
     );
   }
+
+  renderTransactionTableOptions = () => {
+    const { form, offices, programs } = this.props;
+    const { getFieldDecorator } = form;
+    return (
+      <StyledChartControler onSubmit={this.handleSubmit} className="login-form">
+
+        <Form.Item label="Program">
+          {getFieldDecorator('programCode', {
+            rules: [],
+          })(
+            <Select placeholder="Program">
+            {programs && programs.map(program => (
+              <Option value={program.code}>{program.name}</Option>
+            ))}
+            </Select>,
+          )}
+        </Form.Item>
+
+        <Form.Item label="Office">
+          {getFieldDecorator('officeId', {
+            rules: [],
+          })(
+            <Select placeholder="Office">
+              {offices && offices.map(office => (
+                <Option value={office.id}>{office.name}</Option>
+              ))}
+            </Select>,
+          )}
+        </Form.Item>
+
+        <Form.Item label="RangePicker">
+          {getFieldDecorator('range-picker', { rules: []})(<RangePicker />)}
+        </Form.Item>
+
+        {this.renderActions()}
+      </StyledChartControler>
+    );
+  }
   render() {
     const { chartRoute } = this.props;
 
@@ -270,6 +309,8 @@ class ChartForm extends Component {
         return this.renderRegionalBudgetOptions();
       case "/charts/regionaltransaction":
         return this.renderRegionalTransactionOptions();
+      case "/charts/transactiontable":
+        return this.renderTransactionTableOptions();
       default:
         return null;
     }

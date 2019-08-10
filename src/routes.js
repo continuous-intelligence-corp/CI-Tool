@@ -61,6 +61,13 @@ const routes = [
     component: Charts,
   },
   {
+    path: "/charts",
+    subPath: "/transactiontable",
+    name: "Transaction Table",
+    icon: "table",
+    component: Charts,
+  },
+  {
     path: "/settings",
     name: "settings",
     icon: "sliders",
