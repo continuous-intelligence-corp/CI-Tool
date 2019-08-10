@@ -13,7 +13,8 @@ class DisasterLoanBudgetPie extends Component {
   state = {
     chartOptions: {
       chart: {
-	        type: 'pie'
+	        type: 'pie',
+          height: this.props.height || null,
 	    },
 
 	    plotOptions: {

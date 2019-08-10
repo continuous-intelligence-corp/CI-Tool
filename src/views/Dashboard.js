@@ -10,17 +10,15 @@ import DisasterLoanBudgetPie from "../charts/DisasterLoanBudgetPie.js";
 import RegionalBudget from "../charts/RegionalBudget.js";
 
 const StyledDashboard = styled.div`
+  height: 90vh;
   .ant-row {
     margin-top: 25px;
+    height: 50%;
+    .ant-col-16, .ant-col-8 {
+      height: 100%;
+    }
   }
 `;
-
-let data = {
-        queryType: "timeseries",
-        dataSource: "transaction2",
-        intervals: ["2019-05-20/2019-06-05"],
-        granularity: "day",
-};
 class Dashboard extends Component {
   render() {
     return (
@@ -28,26 +26,26 @@ class Dashboard extends Component {
         <Row gutter={24}>
           <Col span={16}>
             <Link to={"/charts/budgetdrawdown"}>
-              <BudgetDrawdown />
+              <BudgetDrawdown height={"30%"} />
             </Link>
           </Col>
           <Col span={8}>
-            <DisasterLoanBudgetPie />
+            <DisasterLoanBudgetPie height={"65%"} />
           </Col>
         </Row>
         <Row gutter={24}>
           <Col span={8}>
             <Link to={"/charts/regionalbudget"}>
-              <RegionalBudget />
+              <RegionalBudget height={"65%"} />
             </Link>
           </Col>
           <Col span={8}>
             <Link to={"/charts/incometracker"}>
-              <IncomeTracker />
+              <IncomeTracker height={"65%"} />
             </Link>
           </Col>
           <Col span={8}>
-            <DisasterLoan />
+            <DisasterLoan height={"65%"} />
           </Col>
         </Row>
       </StyledDashboard>
