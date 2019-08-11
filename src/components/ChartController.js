@@ -287,7 +287,7 @@ class ChartForm extends Component {
           )}
         </Form.Item>
 
-        <Form.Item label="RangePicker">
+        <Form.Item label="Date Range">
           {getFieldDecorator('timeRange', { rules: []})(<RangePicker />)}
         </Form.Item>
 

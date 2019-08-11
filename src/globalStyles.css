@@ -129,3 +129,27 @@ Highcharts.theme = {
 .ant-layout {
   min-height: 100vh;
 }
+
+
+.ant-drawer-header {
+  height: 65px;
+  .ant-drawer-title {
+    color: #E5E7E9;
+    top: 5px;
+    position: relative;
+  }
+}
+
+.ant-layout-header, .ant-drawer-header, .ant-menu {
+  background: #47475C;
+}
+
+.ant-menu-submenu-popup {
+  .ant-menu-sub {
+    background: #373648 !important;
+  }
+}
+
+.ant-menu-item-selected {
+  background: #8085E8 !important;
+}

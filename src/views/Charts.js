@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Row, Col } from 'antd';
+import { Row, Col, Drawer, Icon } from 'antd';
 import ChartController from "../components/ChartController";
 import { fetchOffices, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
 import BudgetDrawdown from "../charts/BudgetDrawdown";
@@ -19,13 +19,37 @@ const StyledCharts = styled.div`
   .ant-card-body {
     /* background: #353537; */
   }
+
+  .chart-controller-icon {
+    position: absolute;
+    z-index: 1000;
+    left: 97%;
+    top: 2%;
+    color: #CCCCCC;
+    svg {
+      height: 35px;
+      width: 35px;
+    }
+  }
 `;
 class Charts extends React.Component {
   state = {
     offices: [],
     programs: [],
     filters: {},
+    visible: false,
   }
+  showDrawer = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  onClose = () => {
+    this.setState({
+      visible: false,
+    });
+  };
 
   componentDidMount() {
     fetchPrograms().then(programs => {
@@ -45,19 +69,19 @@ class Charts extends React.Component {
     let url = this.props.location.pathname;
     switch (url) {
       case "/charts/budgetdrawdown":
-        return <BudgetDrawdown offices={offices} programs={programs} filters={filters} height={"59%"} />;
+        return <BudgetDrawdown offices={offices} programs={programs} filters={filters} height={"38%"} />;
       case "/charts/incometracker":
-        return <IncomeTracker programs={programs} offices={offices} filters={filters} height={"59%"} />;
+        return <IncomeTracker programs={programs} offices={offices} filters={filters} height={"38%"} />;
       case "/charts/regionalcomparison":
-        return <OfficeComparison programs={programs} offices={offices} filters={filters} height={"59%"} />;
+        return <OfficeComparison programs={programs} offices={offices} filters={filters} height={"38%"} />;
       case "/charts/transactionTracker":
-        return <TransactionTracker programs={programs} offices={offices} filters={filters} height={"59%"} />;
+        return <TransactionTracker programs={programs} offices={offices} filters={filters} height={"38%"} />;
       case "/charts/regionalbudget":
-        return <RegionalBudget programs={programs} filters={filters} height={"59%"} />;
+        return <RegionalBudget programs={programs} filters={filters} height={"38%"} />;
       case "/charts/regionaltransaction":
-        return <RegionalTransaction programs={programs} offices={offices} filters={filters} height={"59%"} />;
+        return <RegionalTransaction programs={programs} offices={offices} filters={filters} height={"38%"} />;
       case "/charts/transactiontable":
-        return <TransactionTable programs={programs} offices={offices} filters={filters} height={"59%"} />;
+        return <TransactionTable programs={programs} offices={offices} filters={filters} height={"38%"} />;
       default:
         return null;
     }
@@ -65,29 +89,32 @@ class Charts extends React.Component {
   }
   render() {
     const { offices, programs } = this.state;
+    //  ? ( NO CHART CONTROLLER
     return (
       <StyledCharts>
-        {this.props.location.pathname === "/charts/transactionTracker" ? (
-          <Row gutter={24}>
+        {this.props.location.pathname !== "/charts/transactionTracker" && (
+          <Icon type="menu-fold" onClick={this.showDrawer} className="chart-controller-icon"/>
+        )}
+        <Row gutter={24}>
           <Col span={24}>
             {this.renderChart()}
           </Col>
         </Row>
-        ) : (
-          <Row gutter={24}>
-          <Col span={18}>
-            {this.renderChart()}
-          </Col>
-          <Col span={6}>
-            <ChartController
-              chartRoute={this.props.location.pathname}
-              offices={offices}
-              programs={programs}
-              handleSetFilters={this.handleSetFilters}
-            />
-          </Col>
-        </Row>
-        )}
+        <Drawer
+          title="Chart Controls"
+          placement="right"
+          closable={false}
+          onClose={this.onClose}
+          width={300}
+          visible={this.state.visible}
+        >
+          <ChartController
+            chartRoute={this.props.location.pathname}
+            offices={offices}
+            programs={programs}
+            handleSetFilters={this.handleSetFilters}
+          />
+        </Drawer>
       </StyledCharts>
     );
   }
