@@ -257,7 +257,7 @@ class App extends React.Component {
     return (
       <Layout className="layout">
         <NavigationHeader collapsed={this.state.collapsed} routes={routes} curRoute={this.props.location.pathname} />
-        <Content style={{ padding: '0 25px' }}>
+        <Content id="content" style={{ padding: '0 25px' }}>
           {switchRoutes}
         </Content>
         <Footer style={{ textAlign: 'center' }}>

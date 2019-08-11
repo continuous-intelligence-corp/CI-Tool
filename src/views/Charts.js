@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Row, Col, Drawer, Icon } from 'antd';
 import ChartController from "../components/ChartController";
-import { fetchOffices, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
+import { CHART_HEIGHT_PERCENTAGE, fetchOffices, fetchPrograms, fetchDruidData } from "../services/ChartService.js";
 import BudgetDrawdown from "../charts/BudgetDrawdown";
 import IncomeTracker from "../charts/IncomeTracker";
 import TransactionTracker from "../charts/TransactionTracker";
@@ -38,6 +38,7 @@ class Charts extends React.Component {
     programs: [],
     filters: {},
     visible: false,
+    chartHeight: null,
   }
   showDrawer = () => {
     this.setState({
@@ -58,6 +59,10 @@ class Charts extends React.Component {
     fetchOffices().then(offices => {
       this.setState({ offices });
     });
+    var content = document.getElementById('content');
+    if (content) {
+      this.setState({ chartHeight: Math.round(content.clientHeight-content.clientHeight*.05)})
+    }
   }
 
   handleSetFilters = filters => {
@@ -65,23 +70,24 @@ class Charts extends React.Component {
   }
 
   renderChart() {
-    const { filters, offices, programs } = this.state;
+    const { filters, offices, programs, chartHeight } = this.state;
     let url = this.props.location.pathname;
+    if (!chartHeight) return null;
     switch (url) {
       case "/charts/budgetdrawdown":
-        return <BudgetDrawdown offices={offices} programs={programs} filters={filters} height={"38%"} />;
+        return <BudgetDrawdown offices={offices} programs={programs} filters={filters} height={chartHeight} />;
       case "/charts/incometracker":
-        return <IncomeTracker programs={programs} offices={offices} filters={filters} height={"38%"} />;
+        return <IncomeTracker programs={programs} offices={offices} filters={filters} height={chartHeight} />;
       case "/charts/regionalcomparison":
-        return <OfficeComparison programs={programs} offices={offices} filters={filters} height={"38%"} />;
+        return <OfficeComparison programs={programs} offices={offices} filters={filters} height={chartHeight} />;
       case "/charts/transactionTracker":
-        return <TransactionTracker programs={programs} offices={offices} filters={filters} height={"38%"} />;
+        return <TransactionTracker programs={programs} offices={offices} filters={filters} height={chartHeight} />;
       case "/charts/regionalbudget":
-        return <RegionalBudget programs={programs} filters={filters} height={"38%"} />;
+        return <RegionalBudget programs={programs} filters={filters} height={chartHeight} />;
       case "/charts/regionaltransaction":
-        return <RegionalTransaction programs={programs} offices={offices} filters={filters} height={"38%"} />;
+        return <RegionalTransaction programs={programs} offices={offices} filters={filters} height={chartHeight} />;
       case "/charts/transactiontable":
-        return <TransactionTable programs={programs} offices={offices} filters={filters} height={"38%"} />;
+        return <TransactionTable programs={programs} offices={offices} filters={filters} height={chartHeight} />;
       default:
         return null;
     }

@@ -20,32 +20,44 @@ const StyledDashboard = styled.div`
   }
 `;
 class Dashboard extends Component {
+  state = {
+    chartHeight: null
+  }
+  componentDidMount() {
+    var content = document.getElementById('content');
+    if (content) {
+      this.setState({ chartHeight: Math.round(content.clientHeight/2-content.clientHeight*.025)})
+    }
+  }
   render() {
+    const { chartHeight } = this.state;
+    console.log("chartHeight", chartHeight);
+    if (!chartHeight) return null;
     return (
       <StyledDashboard>
         <Row gutter={24}>
           <Col span={16}>
             <Link to={"/charts/budgetdrawdown"}>
-              <BudgetDrawdown height={"30%"} />
+              <BudgetDrawdown height={chartHeight} />
             </Link>
           </Col>
           <Col span={8}>
-            <DisasterLoanBudgetPie height={"65%"} />
+            <DisasterLoanBudgetPie height={chartHeight} />
           </Col>
         </Row>
         <Row gutter={24}>
           <Col span={8}>
             <Link to={"/charts/regionalbudget"}>
-              <RegionalBudget height={"65%"} />
+              <RegionalBudget height={chartHeight} />
             </Link>
           </Col>
           <Col span={8}>
             <Link to={"/charts/incometracker"}>
-              <IncomeTracker height={"65%"} />
+              <IncomeTracker height={chartHeight} />
             </Link>
           </Col>
           <Col span={8}>
-            <DisasterLoan height={"65%"} />
+            <DisasterLoan height={chartHeight} />
           </Col>
         </Row>
       </StyledDashboard>

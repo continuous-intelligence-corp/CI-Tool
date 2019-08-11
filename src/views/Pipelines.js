@@ -1,63 +1,10 @@
 import React from "react";
-import { Card, Table, Divider, Tag, Icon, Select, Form } from 'antd';
+import { Card, Select, Form, Input } from 'antd';
 import styled from "styled-components";
 
 
-import { DRUID_DATA_SOURCE, setDruidDataSource, fetchProperties, setProperty } from "../services/ChartService.js";
-
-const {Option} = Select;
-const columns = [
-{
-  title: 'Status',
-  dataIndex: 'status',
-  key: 'status',
-  render: text => <Icon type={text === "done" ? "check-circle" : "close-circle"} style={{ color: text === "done" ? "green" : "red"}} />,
-}, {
-  title: 'Pipeline Name',
-  dataIndex: 'name',
-  key: 'name',
-  render: text => <h4 style={{color: "#262626"}}>{text}</h4>
-}, {
-  title: 'URL',
-  dataIndex: 'url',
-  key: 'url',
-  render: text => <p style={{color: "#B7B7B7"}}>{text}</p>
-}, {
-  title: 'Actions',
-  key: 'actions',
-  dataIndex: 'actions',
-  render: tags => (
-    <span>
-      {tags.map(tag => {
-        let color = tag === "search" ? 'geekblue' : 'green';
-        if (tag === 'email') {
-          color = 'volcano';
-        }
-        return <Tag color={color} key={tag}>{tag.toUpperCase()}</Tag>;
-      })}
-    </span>
-  ),
-}];
-
-const data = [{
-  key: '1',
-  name: "Grants Dashboard",
-  status: "done",
-  url: "myCL->Charts->GrantsDrawdown",
-  actions: ['download', 'search', 'email'],
-}, {
-  key: '2',
-  name: "Loans Dashboard",
-  status: "uhoh",
-  url: "myCL->Charts->GrantsByRegion",
-  actions: ['download', 'search', 'email'],
-}, {
-  key: '3',
-  name: "Personnel Dashboard",
-  status: "uhoh",
-  url: "myCL->Charts->LoansDrawdown",
-  actions: ['download', 'search', 'email'],
-}];
+import { DRUID_DATA_SOURCE, CHART_HEIGHT_PERCENTAGE, setChartHeightPercentage, setDruidDataSource, fetchProperties, setProperty } from "../services/ChartService.js";
+const { Search } = Input;
 
 const StyledPipeline = styled(Card)`
   background: #fff;
@@ -73,6 +20,7 @@ class Pipelines extends React.Component {
     dataGenInterval: null,
     druidDataSource: null,
     avgTransactionAmt: null,
+    chartHeightPercentage: null,
   }
 
   updateDataGenValue = (value) => {
@@ -101,19 +49,23 @@ class Pipelines extends React.Component {
     }
   }
 
+  changeChartHeightValue = event => {
+    this.setState({ chartHeightPercentage: event.target.value });
+  }
+
   componentDidMount() {
     fetchProperties().then(properties => {
       let value = properties && properties[0] && properties[0].value;
       this.setDataValue({
         dataGenInterval: properties && properties[0] && properties[0].value,
         avgTransactionAmt: properties && properties[1] && properties[1].value,
-        druidDataSource: DRUID_DATA_SOURCE
+        druidDataSource: DRUID_DATA_SOURCE,
+        chartHeightPercentage: CHART_HEIGHT_PERCENTAGE,
       });
     });
   }
   render() {
     const { dataGenInterval, druidDataSource, avgTransactionAmt } = this.state;
-    console.log("state", this.state);
     return (
       <StyledPipeline title="Settings">
         <Form>
@@ -156,3 +108,19 @@ class Pipelines extends React.Component {
 }
 
 export default Pipelines;
+
+/*
+<Form.Item label="Chart Height Percentage">
+  <Search
+    placeholder="input height"
+    enterButton="Set"
+    style={{width: "200px"}}
+    value={this.state.chartHeightPercentage}
+    onChange={this.changeChartHeightValue}
+    onSearch={value => {
+      setChartHeightPercentage(this.state.chartHeightPercentage);
+      this.setState({ chartHeightPercentage: CHART_HEIGHT_PERCENTAGE });
+    }}
+  />
+</Form.Item>
+ */

@@ -8,6 +8,7 @@ const CI_BACKEND_URL = "http://3.221.2.243:3000";
 const DRUID_URL = `${CI_BACKEND_URL}/druid/v2`;
 export var DRUID_DATA_SOURCE = "transaction2";
 export var CHART_POLL_TIMER = 10000;
+export var CHART_HEIGHT_PERCENTAGE = "40%";
 export const DISASTER_LOAN_PROGRAM_CODE = "028-017";
 export function fetchOffices(){
   return new Promise((resolve, reject) => {
@@ -114,4 +115,13 @@ export function setDruidDataSource(value){
 
 export function setDruidDataSourceForQuery(druidQueryParams) {
   druidQueryParams.dataSource = DRUID_DATA_SOURCE;
+}
+
+export function setChartHeightPercentage(value) {
+  console.log("value", value);
+  if (value.length > 3 || value.indexOf("%") !== value.length - 1) {
+    CHART_HEIGHT_PERCENTAGE = "40%";
+  } else {
+    CHART_HEIGHT_PERCENTAGE = value;
+  }
 }
