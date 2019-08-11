@@ -46,10 +46,12 @@ class DisasterLoan extends Component {
       },
 
       tooltip: {
-          pointFormat: '{point.name}<br>' +
-              'Total Budget: {point.budget}<br>' +
-              'Total Spent: {point.actual}<br>' +
-              'Budget Remaining: {point.remain}'
+        formatter: function () {
+            return '<b>' + this.point.name + '</b><br/>' +
+            'Total Budget: $' + Highcharts.numberFormat(this.point.budget, 0,',',',') + " USD<br/>" +
+            'Total Spent: $' + Highcharts.numberFormat(this.point.actual, 0,',',',') + " USD<br/>" +
+            'Budget Remaining: $' + Highcharts.numberFormat(this.point.remain, 0,',',',') + " USD<br/>";
+        },
       },
       mapNavigation: {
                     enabled: true

@@ -48,21 +48,25 @@ const COUNT_TRANSACTION = [
 ];
 
 const SUM_TOOLTIP = {
-    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y:.1f} USD</b></td></tr>',
-    footerFormat: '</table>',
+    formatter: function () {
+
+      return this.points.reduce(function (s, point) {
+                return s + '<br/>' + point.series.name + ': $' +
+                    Highcharts.numberFormat(point.y, 0,',',',') + ' USD';
+            }, '<b>' + this.x + '</b>');
+    },
     shared: true,
-    useHTML: true
 };
 
 const COUNT_TOOLTIP = {
-    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y:.0f} Transactions</b></td></tr>',
-    footerFormat: '</table>',
-    shared: true,
-    useHTML: true
+  formatter: function () {
+
+    return this.points.reduce(function (s, point) {
+              return s + '<br/>' + "Transactions" + ': ' +
+                  Highcharts.numberFormat(point.y, 0,',',',') + '';
+          }, '<b>' + this.x + '</b>');
+  },
+  shared: true,
 }
 var druidQueryParams = {
   "queryType": "timeseries",

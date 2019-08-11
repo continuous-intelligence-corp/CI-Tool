@@ -15,15 +15,23 @@ var H = Highcharts,
 
 
 const SUM_TOOLTIP = {
-    pointFormat: '{point.name}<br>' +
-        'Total Commitment: {point.TotalSpent}<br>' +
-        'Jobs Created: {point.jobsno}<br>' +
-        'Risk Review: {point.riskreview}'
+    formatter: function () {
+        return '<b>' + this.series.name + '</b><br/>' +
+        'Total Commitment: $' + Highcharts.numberFormat(this.point.TotalSpent, 0,',',',') + " USD<br/>" +
+        'Jobs Created: ' + Highcharts.numberFormat(this.point.jobsno, 0,',',',') + " <br/>" +
+        'Risk Review: ' + Highcharts.numberFormat(this.point.riskreview, 0,',',',') + " <br/>";
+    },
+    // pointFormat: '{point.name}<br>' +
+    //     'Total Commitment: {point.TotalSpent}<br>' +
+    //     'Jobs Created: {point.jobsno}<br>' +
+    //     'Risk Review: {point.riskreview}'
 };
 
 const COUNT_TOOLTIP = {
-    pointFormat: '{point.name}<br>' +
-        'Transactions: {point.count:.0f}<br>'
+  formatter: function () {
+      return '<b>' + this.point.name + '</b><br/>' +
+      'Transactions: ' + Highcharts.numberFormat(this.point.count, 0,',',',') + " <br/>";
+  },
 };
 
 var druidQueryParams = {

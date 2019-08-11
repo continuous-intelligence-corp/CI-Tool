@@ -29,15 +29,19 @@ const COUNT_TRANSACTION = [
 ];
 
 const SUM_TOOLTIP = {
-    pointFormat: '{point.name}<br>' +
-        'Total Budget: {point.budget}<br>' +
-        'Total Spent: {point.actual}<br>' +
-        'Budget Remaining: {point.remain}'
+    formatter: function () {
+        return '<b>' + this.point.name + '</b><br/>' +
+        'Total Budget: $' + Highcharts.numberFormat(this.point.budget, 0,',',',') + " USD<br/>" +
+        'Total Spent: $' + Highcharts.numberFormat(this.point.actual, 0,',',',') + " USD<br/>" +
+        'Budget Remaining: $' + Highcharts.numberFormat(this.point.remain, 0,',',',') + " USD<br/>";
+    },
 };
 
 const COUNT_TOOLTIP = {
-    pointFormat: '{point.name}<br>' +
-        'Transactions: {point.count:.0f}<br>'
+      formatter: function () {
+          return '<b>' + this.point.name + '</b><br/>' +
+          'Transactions: ' + Highcharts.numberFormat(this.point.count, 0,',',',') + "<br/>";
+      },
 };
 
 var druidQueryParams = {

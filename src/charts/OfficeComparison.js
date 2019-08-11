@@ -48,21 +48,27 @@ const COUNT_TRANSACTION = [
 ];
 
 const SUM_TOOLTIP = {
-    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y:.1f} USD</b></td></tr>',
-    footerFormat: '</table>',
+    formatter: function () {
+
+      return this.points.reduce(function (s, point) {
+                return s + '<br/><b style="color:' + point.series.color + '">' + point.series.name + ':</b> $' +
+                    Highcharts.numberFormat(point.y, 0,',',',') + ' USD';
+            }, '<b>' + this.x + '</b>');
+    },
     shared: true,
-    useHTML: true
+    useHTML: true,
 };
 
 const COUNT_TOOLTIP = {
-    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y:.0f} Transactions</b></td></tr>',
-    footerFormat: '</table>',
-    shared: true,
-    useHTML: true
+  formatter: function () {
+
+    return this.points.reduce(function (s, point) {
+              return s + '<br/><b style="color:' + point.series.color + '">' + point.series.name + ':</b> ' +
+                  Highcharts.numberFormat(point.y, 0,',',',') + ' Txns';
+          }, '<b>' + this.x + '</b>');
+  },
+  shared: true,
+  useHTML: true,
 }
 var druidQueryParams = {
   "queryType": "topN",
@@ -243,6 +249,7 @@ class OfficeComparison extends Component {
       } else {
         chartName = `Regional Monthly ${transactionTitle}`;
       }
+      console.log("transactionType", transactionType);
       this.setState({
         transactionType,
         filters,
