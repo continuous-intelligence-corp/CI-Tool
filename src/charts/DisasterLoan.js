@@ -42,7 +42,7 @@ class DisasterLoan extends Component {
         height: this.props.height || null,
       },
       title: {
-          text: 'Disaster Loan Budget Vs. Actual'
+          text: 'Disaster Loans Budget Variance'
       },
 
       tooltip: {

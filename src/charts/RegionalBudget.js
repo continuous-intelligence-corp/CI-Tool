@@ -61,7 +61,7 @@ class RegionalBudget extends Component {
       },
 
       title: {
-          text: 'Regional Budget By Office'
+          text: 'Budget Variance By Office'
       },
 
       tooltip: SUM_TOOLTIP,
@@ -204,12 +204,12 @@ class RegionalBudget extends Component {
       let filterProgram = null;
 
       const { transactionType } = this.props.filters;
-      let transactionTitle = transactionType === "count" ? "Transactions" : "Budget";
+      let transactionTitle = transactionType === "count" ? "Transactions" : "Budget Variance";
       let yAxisType = transactionType === "count" ? "Transactions" : "USD";
       if (this.props.filters.programCode) {
         this.props.programs.map(program => {
           if (program.code === this.props.filters.programCode) {
-            chartName = `${program.name} ${transactionTitle} By Office`;
+            chartName = `${transactionTitle} By Office - ${program.name}`;
             filterProgram = program;
           }
         });
@@ -221,7 +221,7 @@ class RegionalBudget extends Component {
           }
         };
       } else {
-        chartName = `Regional ${transactionTitle} By Office`;
+        chartName = `${transactionTitle} By Office`;
       }
       this.setState({
         transactionType,

@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar, Badge, Dropdown, Layout, Icon, Menu, Tooltip } from 'antd';
-import ciLogo2 from "../assets/ciLogo2.png";
+import ciLogo3 from "../assets/ciLogo3.png";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -23,8 +23,8 @@ const NavigationHeaderWithStyles = styled(Header)`
       align-items: center;
       padding: 15px;
       img {
-        height: 48px;
-        width: 48px;
+        height: 60px;
+        width: 60px;
       }
     }
 
@@ -117,7 +117,7 @@ class NavigationHeader extends React.Component {
         <div className="left-container">
           <div className="logo">
             <div className="logo-wrapper">
-              <img src={ciLogo2} alt={"logo"}/>
+              <img src={ciLogo3} alt={"logo"}/>
             </div>
             {!this.props.collapsed && (
               <h1>Continuous <br /> Intelligence</h1>

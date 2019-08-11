@@ -26,33 +26,7 @@ var druidQueryParams = {
     "metric": "sum__TotalSpent",
     "dimension": "program_code"
 };
-// Test DATA
-/*
-{
-    name: 'Start',
-    y: 120000
-}, {
-    name: 'Product Revenue',
-    y: 569000
-}, {
-    name: 'Service Revenue',
-    y: 231000
-}, {
-    name: 'Positive Balance',
-    isIntermediateSum: true,
-    color: Highcharts.getOptions().colors[1]
-}, {
-    name: 'Fixed Costs',
-    y: -342000
-}, {
-    name: 'Variable Costs',
-    y: -233000
-}, {
-    name: 'Balance',
-    isSum: true,
-    color: Highcharts.getOptions().colors[1]
-}
-*/
+
 class BudgetDrawdown extends Component {
   state = {
     programs: [],
@@ -60,6 +34,10 @@ class BudgetDrawdown extends Component {
       chart: {
         type: 'waterfall',
         height: this.props.height || null,
+      },
+      lang: {
+        decimalPoint: '.',
+        thousandsSep: ','
       },
 
       title: {
@@ -83,7 +61,11 @@ class BudgetDrawdown extends Component {
       },
 
       tooltip: {
-        pointFormat: '<b>${point.y:,.2f}</b> USD'
+        //pointFormat: '<b>${point.y:,.0f}</b> USD',
+        formatter: function () {
+            return '<b>' + this.point.name + '</b><br/>' +
+            "$" + Highcharts.numberFormat(this.y, 0,',',',') + " USD";
+        },
       },
 
       series: [{
@@ -93,7 +75,7 @@ class BudgetDrawdown extends Component {
         dataLabels: {
             enabled: true,
             formatter: function () {
-                return Highcharts.numberFormat(this.y / 1000000, 0, ',') + 'M';
+                return Highcharts.numberFormat(this.y/1000000, 0,',',',') + "M";
             },
             style: {
                 fontWeight: 'bold'
@@ -248,6 +230,7 @@ class BudgetDrawdown extends Component {
   }
   render() {
     const { chartOptions } = this.state;
+    console.log("state", this.state);
     return (
       <ChartWrapperStyles>
         <div>

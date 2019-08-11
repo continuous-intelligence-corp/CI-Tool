@@ -86,7 +86,7 @@ class IncomeTracker extends Component {
         height: this.props.height || null,
       },
       title: {
-        text: 'Monthly Budget'
+        text: 'Budget vs Actuals By Month'
       },
       subtitle: {
           text: ''
@@ -203,7 +203,7 @@ class IncomeTracker extends Component {
         if (programCode) {
           this.props.programs.map(program => {
             if (program.code === programCode) {
-              chartName = `${program.name} Monthly ${transactionTitle}`;
+              chartName = `${program.name} - Monthly ${transactionTitle}`;
               filterProgram = program;
             }
           });

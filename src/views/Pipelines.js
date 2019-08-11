@@ -142,6 +142,11 @@ class Pipelines extends React.Component {
               <Option value="1000000">1,000,000</Option>
               <Option value="5000000">5,000,000</Option>
               <Option value="10000000">10,000,000</Option>
+              <Option value="25000000">25,000,000</Option>
+              <Option value="50000000">50,000,000</Option>
+              <Option value="75000000">75,000,000</Option>
+              <Option value="100000000">100,000,000</Option>
+
             </Select>
           </Form.Item>
         </Form>
