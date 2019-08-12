@@ -121,7 +121,7 @@ class RegionalTransaction extends Component {
 
   setTimeIntervals = queryParams => {
     let now = new Date();
-    let weekAgo = new Date(now.getTime() - 1000 * 60 * 60 * 24 * 7);
+    let weekAgo = new Date(now.getTime() - 1000 * 60 * 60 * 24 * 1);
     queryParams.intervals = `${weekAgo.toISOString()}/${now.toISOString()}`;
   }
 

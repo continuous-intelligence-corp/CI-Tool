@@ -107,7 +107,7 @@ class Charts extends React.Component {
         </Row>
         <Drawer
           title="Chart Controls"
-          placement="right"
+          placement="left"
           closable={false}
           onClose={this.onClose}
           width={300}
