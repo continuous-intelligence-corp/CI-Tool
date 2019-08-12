@@ -90,6 +90,8 @@ class Pipelines extends React.Component {
           </Form.Item>
           <Form.Item label="Average Transaction Amount">
             <Select value={avgTransactionAmt} style={{ width: 120 }} onChange={this.updateAvgTransactionAmtValue}>
+              <Option value="1000">1,000</Option>
+              <Option value="10000">10,000</Option>
               <Option value="100000">100,000</Option>
               <Option value="1000000">1,000,000</Option>
               <Option value="5000000">5,000,000</Option>
@@ -98,7 +100,11 @@ class Pipelines extends React.Component {
               <Option value="50000000">50,000,000</Option>
               <Option value="75000000">75,000,000</Option>
               <Option value="100000000">100,000,000</Option>
-
+              <Option value="500000000">500,000,000</Option>
+              <Option value="750000000">750,000,000</Option>
+              <Option value="1000000000">1,000,000,000</Option>
+              <Option value="1000000000">5,000,000,000</Option>
+              <Option value="10000000000">10,000,000,000</Option>
             </Select>
           </Form.Item>
         </Form>

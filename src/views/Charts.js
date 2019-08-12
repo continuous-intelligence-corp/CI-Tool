@@ -23,8 +23,7 @@ const StyledCharts = styled.div`
   .chart-controller-icon {
     position: absolute;
     z-index: 1000;
-    left: 97%;
-    top: 2.5%;
+    top: 18px;
     color: #CCCCCC;
     svg {
       height: 25px;

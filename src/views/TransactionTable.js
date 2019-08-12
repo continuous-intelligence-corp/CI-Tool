@@ -44,13 +44,19 @@ const StyledCard = styled(Card)`
   height: 90vh;
   overflow: scroll;
   .even-row {
-    background: #FAFAFA
+    background: #FAFAFA;
   }
   /* .ant-table-row {
     background: #EEEEEE;
   } */
   table {
     border: 1px solid #ebedf0;
+    .ant-table-thead {
+      th {
+        background: #6f6e8f;
+        color: #ededf0;
+      }
+    }
   }
 `;
 
@@ -208,7 +214,7 @@ class TransactionTable extends React.Component {
   render() {
     const { data } = this.state;
     return (
-      <StyledCard title="Transaction Table">
+      <StyledCard>
         <Table
           columns={columns}
           dataSource={data}
