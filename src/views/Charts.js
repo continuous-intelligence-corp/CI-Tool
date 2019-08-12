@@ -24,11 +24,11 @@ const StyledCharts = styled.div`
     position: absolute;
     z-index: 1000;
     left: 97%;
-    top: 2%;
+    top: 2.5%;
     color: #CCCCCC;
     svg {
-      height: 35px;
-      width: 35px;
+      height: 25px;
+      width: 25px;
     }
   }
 `;

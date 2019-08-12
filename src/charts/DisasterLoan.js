@@ -106,13 +106,9 @@ class DisasterLoan extends Component {
     setDruidDataSourceForQuery(druidQueryParams);
     fetchOffices().then(offices => {
       offices = offices.map(office => {
-        let budget = 0;
-
-        Object.keys(office).map(key => {
-          if (key.includes(DISASTER_LOAN_PROGRAM_CODE)) {
-            budget += office[key];
-          }
-        });
+        console.log("office", office);
+        console.log("DISASTER_LOAN_PROGRAM_CODE", DISASTER_LOAN_PROGRAM_CODE);
+        let budget = office[DISASTER_LOAN_PROGRAM_CODE];
         let actual = 0;
         return {
           ...office,

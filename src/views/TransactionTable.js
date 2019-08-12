@@ -43,6 +43,15 @@ const StyledCard = styled(Card)`
   background: #fff;
   height: 90vh;
   overflow: scroll;
+  .even-row {
+    background: #FAFAFA
+  }
+  /* .ant-table-row {
+    background: #EEEEEE;
+  } */
+  table {
+    border: 1px solid #ebedf0;
+  }
 `;
 
 var druidQueryParams = {
@@ -169,7 +178,7 @@ class TransactionTable extends React.Component {
             date: date.toLocaleString(),
             office,
             program,
-            commitment: druidEvent.TotalSpent,
+            commitment: '$' + Highcharts.numberFormat(druidEvent.TotalSpent, 0,',',','),
             jobs: druidEvent.jobsno || 0,
             riskreview: druidEvent.riskreview || 0,
           })
@@ -200,7 +209,17 @@ class TransactionTable extends React.Component {
     const { data } = this.state;
     return (
       <StyledCard title="Transaction Table">
-        <Table columns={columns} dataSource={data} />
+        <Table
+          columns={columns}
+          dataSource={data}
+          rowClassName={(record, index) => {
+            if (index % 2 === 1) {
+              return "even-row";
+            } else {
+              return "odd-row"
+            }
+          }}
+        />
       </StyledCard>
     );
   }
