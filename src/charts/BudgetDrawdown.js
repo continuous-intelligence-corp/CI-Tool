@@ -21,7 +21,7 @@ var druidQueryParams = {
     ],
     "granularity": "all",
     "postAggregations": [],
-    "intervals": "2019-01-01T00:00:00+00:00/2019-12-31T00:00:00+00:00",
+    "intervals": "2019-07-01T00:00:00+00:00/2019-08-31T00:00:00+00:00",
     "threshold": 10000,
     "metric": "sum__TotalSpent",
     "dimension": "program_code"
@@ -123,6 +123,15 @@ class BudgetDrawdown extends Component {
 
   componentDidMount() {
     setDruidDataSourceForQuery(druidQueryParams);
+    if (this.props.timeout) {
+      setTimeout(() => {
+        this.initialCall();
+      }, this.props.timeout)
+    } else {
+      this.initialCall();
+    }
+  }
+  initialCall = () => {
     fetchPrograms().then(programs => {
       this.setState({
         programs,

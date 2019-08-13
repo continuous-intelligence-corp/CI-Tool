@@ -25,7 +25,7 @@ var druidQueryParams = {
     ],
     "granularity": "all",
     "postAggregations": [],
-    "intervals": "2019-01-01T00:00:00+00:00/2019-12-31T00:00:00+00:00",
+    "intervals": "2019-07-01T00:00:00+00:00/2019-08-31T00:00:00+00:00",
     "filter": {
       "type": "selector",
       "dimension": "program_code",
@@ -104,6 +104,16 @@ class DisasterLoan extends Component {
 
   componentDidMount() {
     setDruidDataSourceForQuery(druidQueryParams);
+    if (this.props.timeout) {
+      setTimeout(() => {
+        this.initialCall();
+      }, this.props.timeout)
+    } else {
+      this.initialCall();
+    }
+  }
+
+  initialCall = () => {
     fetchOffices().then(offices => {
       offices = offices.map(office => {
         console.log("office", office);

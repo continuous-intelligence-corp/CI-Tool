@@ -38,7 +38,7 @@ class Dashboard extends Component {
         <Row gutter={24}>
           <Col span={16}>
             <Link to={"/charts/budgetdrawdown"}>
-              <BudgetDrawdown height={chartHeight} />
+              <BudgetDrawdown height={chartHeight} timeout={0} />
             </Link>
           </Col>
           <Col span={8}>
@@ -48,16 +48,16 @@ class Dashboard extends Component {
         <Row gutter={24}>
           <Col span={8}>
             <Link to={"/charts/regionalbudget"}>
-              <RegionalBudget height={chartHeight} />
+              <RegionalBudget height={chartHeight} timeout={5000} />
             </Link>
           </Col>
           <Col span={8}>
             <Link to={"/charts/incometracker"}>
-              <IncomeTracker height={chartHeight} />
+              <IncomeTracker height={chartHeight} timeout={10000} />
             </Link>
           </Col>
           <Col span={8}>
-            <DisasterLoan height={chartHeight} />
+            <DisasterLoan height={chartHeight} timeout={15000} />
           </Col>
         </Row>
       </StyledDashboard>

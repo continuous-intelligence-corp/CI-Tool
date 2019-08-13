@@ -1,7 +1,7 @@
 // const DRUID_URL = "http://ec2-18-211-174-221.compute-1.amazonaws.com:18082/druid/v2"
 // curl -X GET "http://3.221.2.243:3000/property"
 // Local
-// const CI_BACKEND_URL = "http://localhost:3000";
+//const CI_BACKEND_URL = "http://localhost:3000";
 // Production
 const CI_BACKEND_URL = "http://3.221.2.243:3000";
 

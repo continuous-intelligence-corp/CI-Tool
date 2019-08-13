@@ -78,7 +78,7 @@ var druidQueryParams = {
     "period": "P1M"
   },
   "postAggregations": [],
-  "intervals": "2019-01-01T00:00:00+00:00/2019-12-31T00:00:00+00:00",
+  "intervals": "2019-07-01T00:00:00+00:00/2019-08-31T00:00:00+00:00",
 };
 
 class IncomeTracker extends Component {
@@ -130,6 +130,15 @@ class IncomeTracker extends Component {
   };
   componentDidMount() {
     setDruidDataSourceForQuery(druidQueryParams);
+    if (this.props.timeout) {
+      setTimeout(() => {
+        this.initialCall();
+      }, this.props.timeout)
+    } else {
+      this.initialCall();
+    }
+  }
+  initialCall = () => {
     fetchPrograms().then(programs => {
       let monthlyBudget = _.sumBy(programs, function(program) { return program.target; })/12;
       let monthlyBudgetArray = Array.from({length: 12}, () => Math.round(monthlyBudget/1000)*1000);

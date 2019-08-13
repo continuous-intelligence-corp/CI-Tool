@@ -50,7 +50,7 @@ var druidQueryParams = {
     "aggregations": SUM_TOTALSPENT,
     "granularity": "all",
     "postAggregations": [],
-    "intervals": "2019-01-01T00:00:00+00:00/2019-12-31T00:00:00+00:00",
+    "intervals": "2019-07-01T00:00:00+00:00/2019-08-31T00:00:00+00:00",
     "threshold": 10000,
     "metric": "sum__TotalSpent",
     "dimension": "office_id"
@@ -121,6 +121,16 @@ class RegionalBudget extends Component {
 
   componentDidMount() {
     setDruidDataSourceForQuery(druidQueryParams);
+    if (this.props.timeout) {
+      setTimeout(() => {
+        this.initialCall();
+      }, this.props.timeout)
+    } else {
+      this.initialCall();
+    }
+  }
+
+  initialCall = () => {
     fetchOffices().then(offices => {
       offices = offices.map(office => {
         let budget = 0;
